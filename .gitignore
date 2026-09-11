@@ -1,0 +1,49 @@
+# Sistemas operacionais
+.DS_Store
+Thumbs.db
+
+# Editores
+.idea/
+.vscode/
+
+# Ambiente e segredos
+.env
+.env.*
+!.env.example
+
+# Dependências e artefatos
+node_modules/
+.next/
+dist/
+build/
+coverage/
+staticfiles/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.venv/
+
+# Dados locais
+*.sqlite3
+.npm-cache/
+
+# Logs
+*.log
+
+# Dependencies
+node_modules/
+
+# pnpm cache/store
+.pnpm-store/
+pnpm-store/
+work/pnpm-store/
+
+# Build
+dist/
+build/
+
+# Environment
+.env
+.env.*
