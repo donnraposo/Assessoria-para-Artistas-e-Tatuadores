@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { LoginForm } from "@/components/LoginForm";
 
 export default function LoginPage() {
@@ -11,6 +13,9 @@ export default function LoginPage() {
         <div className="login-card">
           <small>WELCOME BACK</small><h2>Sign in to Atria</h2><p>Use your professional account to continue.</p>
           <LoginForm />
+          <p className="login-switch">
+            New to Atria? <Link href="/register">Create an account</Link>
+          </p>
         </div>
       </section>
     </main>
