@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { LoginForm } from "@/components/LoginForm";
 
 export default function LoginPage() {
@@ -12,6 +14,7 @@ export default function LoginPage() {
         <div className="login-card">
           <small>PRIVATE WORKSPACE</small><h2>Welcome back.</h2><p>Sign in with your professional account.</p>
           <LoginForm />
+          <p className="login-switch">New here? <Link href="/register">Create an account</Link></p>
         </div>
       </section>
     </main>

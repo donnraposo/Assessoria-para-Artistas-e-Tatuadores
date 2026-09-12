@@ -85,6 +85,22 @@ async function deleteWithCsrf(path: string): Promise<void> {
   });
 }
 
+export type SelfServiceRole = "ARTIST" | "STUDIO";
+
+export function register(input: {
+  fullName: string;
+  email: string;
+  password: string;
+  role: SelfServiceRole;
+}): Promise<CurrentUser> {
+  return postWithCsrf<CurrentUser>("/auth/register/", {
+    full_name: input.fullName,
+    email: input.email,
+    password: input.password,
+    role: input.role,
+  });
+}
+
 export async function login(email: string, password: string): Promise<CurrentUser> {
   const token = await csrfToken();
   return requestJson<CurrentUser>("/auth/login/", {

@@ -1,5 +1,20 @@
 # Histórico de Alterações
 
+## 2026-09-12 — Tela de registro
+
+- Adicionadas a tela `/register` e a função `register()` em `lib/api.ts`,
+  cobrindo o auto-cadastro de Artista ou Studio (`POST /api/v1/auth/register/`)
+  que já existia apenas na API.
+- Adicionado seletor de papel (Artist/Studio) reutilizando os ícones já
+  existentes, seguindo a composição de `.login-shell`/`.login-card` da tela
+  de login.
+- Adicionado link "Create an account" na tela de login e "Sign in" na tela
+  de registro, com nova classe `.login-switch` em `styles.css` (seção 18,
+  apenas tokens existentes).
+- Validado com `npm run lint`, `npm run typecheck`, `npm test` e teste real
+  de ponta a ponta (Playwright) do fluxo de cadastro de Studio até o
+  workspace autenticado; suíte backend (81 testes) revalidada sem regressão.
+
 ## 2026-09-12 — Regras de negócio pendentes e correções de API
 
 - Adicionado auto-cadastro de Artista e Studio (`POST /api/v1/auth/register/`),
