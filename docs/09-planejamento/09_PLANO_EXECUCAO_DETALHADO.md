@@ -63,7 +63,8 @@
 
 ## Sprint 03 — Artistas e candidaturas
 
-**Estado:** concluída no backend. Perfil, candidatura, avaliação, metadados privados do portfólio e disponibilidade sem sobreposição foram implementados; a emissão de URL assinada dependerá da escolha do provedor S3 da infraestrutura.
+**Estado:** concluída. Perfil, candidatura, avaliação, portfólio privado com URL
+assinada e disponibilidade sem sobreposição foram implementados e integrados à interface.
 
 ### S03.01 — Perfil e candidatura
 
@@ -79,6 +80,11 @@
 - Validar extensão, MIME real, tamanho, quantidade, ordem e privacidade.
 - **Endpoints:** solicitação de upload, confirmação, listagem e remoção.
 - **Aceite:** binários fora do banco e acesso privado temporário.
+
+**Implementado:** MinIO no Docker local, adaptador S3 compatível, solicitação temporária,
+upload direto, inspeção de assinatura MIME, confirmação idempotente, leitura assinada,
+remoção, auditoria e isolamento por Artist. O limite máximo de imagens permanece sem
+valor arbitrário até definição explícita da regra de negócio.
 
 ### S03.03 — Disponibilidade
 
@@ -203,9 +209,11 @@ disponíveis no frontend e a homologação visual/manual seja registrada.
 - Criar filtros, paginação, estados vazios, erros e confirmação de ações críticas.
 - Restringir Django Admin a suporte técnico controlado.
 
-**Implementado:** dashboard Advisory, filas paginadas, atividade auditada e
-workspaces isolados para Artist e Studio. O Django Admin permanece reservado à
-operação técnica autenticada.
+**Implementado:** dashboard Advisory, sete filas paginadas, atividade auditada,
+workspaces isolados para Artist e Studio e ações de revisão, proposta, reserva,
+cancelamento e fechamento financeiro. O Django Admin permanece reservado à operação
+técnica autenticada. Criação e edição completa dos registros ainda serão entregues
+nas áreas transacionais de cada perfil.
 
 ### S09.02 — Notificações e tarefas
 
@@ -234,7 +242,14 @@ produção, runbooks e restauração real em banco temporário.
 - Executar smoke test em homologação e plano de rollback.
 - **Aceite final:** Guest planejado, confirmado, preenchido, executado e acompanhado sem área do Cliente final.
 
-**Pendente:** telas transacionais, teste visual responsivo/teclado/contraste e
+**Em andamento:** a Assessoria já possui filas, decisões principais e uma bancada
+transacional para criar propostas, reservas, Leads, agendamentos e campanhas; Artist já
+possui perfil, candidatura e disponibilidade; Studio já possui perfil, submissão e
+resposta a reservas. Artist também consulta Guests, agenda, cancelamentos, My Trip e
+metadados do portfólio. O design system foi atualizado para uma linguagem editorial
+urbana própria do universo da tatuagem, mantendo tokens CSS centralizados. A criação
+de viagem e acomodação também está disponível na bancada. O upload privado do portfólio
+foi concluído. Permanecem teste visual responsivo/teclado/contraste e
 homologação manual ponta a ponta. Login, dashboards, API e smoke HTTP já passaram.
 
 ## Gate obrigatório por tarefa

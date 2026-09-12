@@ -5,11 +5,12 @@ export default function LoginPage() {
     <main className="login-shell">
       <section className="login-story">
         <div className="brand brand-large"><b>A</b><span>Atria</span></div>
-        <div><small>GUEST OPERATIONS</small><h1>Make every Guest operation feel effortless.</h1><p>Artists, Studios, schedules, sales, marketing, finance and travel—beautifully coordinated.</p></div>
+        <div className="login-story-copy"><small>THE ART MOVES. WE MAKE IT FLOW.</small><h1>Where artists meet the world.</h1><p>Guests, Studios, schedules, growth and travel—beautifully orchestrated around the craft.</p></div>
+        <span className="story-edition">ATRIA / PROFESSIONAL EDITION</span>
       </section>
       <section className="login-panel">
         <div className="login-card">
-          <small>WELCOME BACK</small><h2>Sign in to Atria</h2><p>Use your professional account to continue.</p>
+          <small>PRIVATE WORKSPACE</small><h2>Welcome back.</h2><p>Sign in with your professional account.</p>
           <LoginForm />
         </div>
       </section>

@@ -16,10 +16,9 @@ class ArtistProfileView(APIView):
         return Response(ArtistProfileSerializer(profile).data)
 
     def put(self, request: Request) -> Response:
-        profile, created = ArtistProfile.objects.get_or_create(user=request.user)
+        profile, _ = ArtistProfile.objects.get_or_create(user=request.user)
         serializer = ArtistProfileSerializer(profile, data=request.data)
         serializer.is_valid(raise_exception=True)
         profile = serializer.save()
-        if created:
-            ArtistApplication.objects.create(artist=profile)
+        ArtistApplication.objects.get_or_create(artist=profile)
         return Response(serializer.data)

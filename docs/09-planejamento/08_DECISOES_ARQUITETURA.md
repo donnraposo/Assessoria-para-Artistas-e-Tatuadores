@@ -168,6 +168,69 @@ de acesso antes de serem exibidas.
 
 **Data:** 2026-09-11.
 
+## ADR-018 — Direção visual editorial para tatuagem
+
+**Decisão:** adotar identidade editorial urbana de alto contraste, com fotografia
+original do processo artístico, navegação responsiva e componentes derivados de
+tokens CSS semânticos.
+
+**Motivo:** traduzir a linguagem visual de referência para o mercado de tatuagem sem
+copiar marca, conteúdo ou elementos do produto automotivo original.
+
+**Consequência:** as jornadas dos três perfis compartilham a mesma base visual; ativos
+rasterizados do produto devem ser originais e mantidos no projeto.
+
+**Data:** 2026-09-11.
+
+## ADR-019 — Interface orientada a reconhecimento
+
+**Decisão:** todo elemento interativo passa a comunicar sua função por ícone, rótulo
+e estado simultaneamente. A numeração editorial usada na navegação (`01`, `02`) foi
+substituída por ícones SVG inline, e os índices decorativos `A/01` do hero e do login
+foram removidos.
+
+**Motivo:** a numeração não comunicava função. Em telas de até 64rem os rótulos eram
+ocultados e restavam apenas algarismos, tornando a navegação ininteligível em tablet.
+Os índices decorativos ocupavam área nobre sem transmitir informação.
+
+**Consequência:** `Icon.tsx` concentra o vocabulário visual, sem dependência externa.
+Novos itens de navegação exigem ícone declarado; o tipo `IconName` garante cobertura
+em tempo de compilação.
+
+**Data:** 2026-09-12.
+
+## ADR-020 — Cor como portadora de estado operacional
+
+**Decisão:** o estado de um registro é comunicado por tom semântico derivado do
+status, através da função pura `statusTone()`. Status desconhecido resolve para tom
+neutro.
+
+**Motivo:** o selo de estado era sempre âmbar, de modo que aprovado, rejeitado e
+pendente tinham aparência idêntica. Os tokens semânticos já existiam, mas não eram
+aplicados a estado.
+
+**Consequência:** a leitura de uma fila deixa de exigir leitura textual célula a
+célula. Novos status exigem mapeamento e teste; a ausência de mapeamento degrada
+para neutro sem quebrar a interface.
+
+**Data:** 2026-09-12.
+
+## ADR-021 — Padrão responsivo por faixa, não por redução
+
+**Decisão:** cada faixa de tela recebe um padrão próprio: barra lateral completa em
+desktop, trilho de ícones com tooltip em tablet e barra inferior flutuante em celular.
+Tabelas operacionais convertem-se em cartões empilhados abaixo de 48rem, usando o
+atributo `data-label` de cada célula.
+
+**Motivo:** a tabela possuía largura mínima de 46rem, forçando rolagem horizontal em
+qualquer tela menor. As filas operacionais são a superfície mais usada pela Assessoria.
+
+**Consequência:** toda célula de tabela operacional deve declarar `data-label`, pois
+é ele que preserva a legibilidade no celular. Alvos de toque passam a observar o
+mínimo de 2.75rem.
+
+**Data:** 2026-09-12.
+
 ## Processo de alteração
 
 Uma decisão aceita somente poderá ser substituída após registro do contexto, alternativas, impacto, migração necessária e aprovação do usuário.

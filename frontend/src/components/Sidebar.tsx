@@ -1,30 +1,54 @@
-import { navigationItems } from "@/content/dashboard";
+"use client";
+
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+
+import { getNavigationItems } from "@/content/dashboard";
+
+import { Icon } from "./Icon";
 
 type SidebarProps = {
   name: string;
   role: string;
 };
 
-export function Sidebar({ name, role }: SidebarProps) {
-  const initials = name
+function buildInitials(name: string): string {
+  return name
     .split(" ")
     .map((part) => part[0])
     .slice(0, 2)
-    .join("");
+    .join("")
+    .toUpperCase();
+}
+
+export function Sidebar({ name, role }: SidebarProps) {
+  const pathname = usePathname();
+  const navigationItems = getNavigationItems(role);
 
   return (
     <aside className="sidebar">
       <div className="brand"><b>A</b><span>Atria</span></div>
-      <small>OPERATIONS</small>
-      <nav>
-        {navigationItems.map((item, index) => (
-          <a className={index === 0 ? "active" : ""} href={item.href} key={item.href}>
-            <i>{String(index + 1).padStart(2, "0")}</i>{item.label}
-          </a>
-        ))}
+      <small className="sidebar-caption">{role.toUpperCase()} WORKSPACE</small>
+      <nav aria-label="Main navigation">
+        {navigationItems.map((item) => {
+          const current = pathname === item.href;
+          return (
+            <Link
+              aria-current={current ? "page" : undefined}
+              className={current ? "nav-item active" : "nav-item"}
+              data-tooltip={item.label}
+              href={item.href}
+              key={item.href}
+            >
+              <Icon name={item.icon} />
+              <span className="nav-label">{item.label}</span>
+              <span aria-hidden="true" className="nav-label-short">{item.short}</span>
+            </Link>
+          );
+        })}
       </nav>
       <div className="profile">
-        <b>{initials}</b>
+        <b>{buildInitials(name)}</b>
         <span><strong>{name}</strong><small>{role}</small></span>
       </div>
     </aside>

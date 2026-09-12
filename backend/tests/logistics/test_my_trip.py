@@ -140,3 +140,76 @@ def test_artist_can_read_only_their_own_my_trip() -> None:
     assert write_response.status_code == 403
     assert other_response.status_code == 403
     assert "private_document_key" not in str(own_response.data)
+
+
+@pytest.mark.django_db
+def test_guest_collection_is_scoped_to_artist_and_denied_to_studio() -> None:
+    artist_user, _, guest, _, appointment = build_scenario("guest-list-access")
+    artist_role = Role.objects.create(code=RoleType.ARTIST, name="Artist")
+    studio_role = Role.objects.create(code=RoleType.STUDIO, name="Studio")
+    UserRole.objects.create(user=artist_user, role=artist_role)
+    UserRole.objects.create(user=appointment.studio.owner, role=studio_role)
+    client = APIClient()
+
+    client.force_authenticate(artist_user)
+    artist_response = client.get("/api/v1/guests/")
+    client.force_authenticate(appointment.studio.owner)
+    studio_response = client.get("/api/v1/guests/")
+
+    assert artist_response.status_code == 200
+    assert [item["id"] for item in artist_response.data] == [str(guest.id)]
+    assert studio_response.status_code == 403
+
+
+@pytest.mark.django_db
+def test_advisory_can_create_guest_logistics_through_api() -> None:
+    artist_user, advisory, guest, _, appointment = build_scenario("logistics-create")
+    advisory_role = Role.objects.create(code=RoleType.ADVISORY, name="Advisory")
+    artist_role = Role.objects.create(code=RoleType.ARTIST, name="Artist")
+    UserRole.objects.create(user=advisory, role=advisory_role)
+    UserRole.objects.create(user=artist_user, role=artist_role)
+    client = APIClient()
+    client.force_authenticate(advisory)
+
+    travel_response = client.post(
+        f"/api/v1/logistics/guests/{guest.id}/travel-segments/",
+        {
+            "segment_type": TravelSegmentType.OUTBOUND,
+            "origin": "Rio de Janeiro",
+            "destination": "Sao Paulo",
+            "departs_at": (appointment.starts_at - timedelta(hours=4)).isoformat(),
+            "arrives_at": (appointment.starts_at - timedelta(hours=2)).isoformat(),
+            "origin_timezone": "America/Sao_Paulo",
+            "destination_timezone": "America/Sao_Paulo",
+            "private_document_key": "private/trip/ticket.pdf",
+            "cost": "200.00",
+            "currency": "BRL",
+        },
+        format="json",
+    )
+    accommodation_response = client.post(
+        f"/api/v1/logistics/guests/{guest.id}/accommodations/",
+        {
+            "name": "Private apartment",
+            "address": "Central Street, 2",
+            "check_in_at": (appointment.starts_at - timedelta(hours=3)).isoformat(),
+            "check_out_at": (appointment.ends_at + timedelta(days=1)).isoformat(),
+            "timezone": "America/Sao_Paulo",
+            "cost": "300.00",
+            "currency": "BRL",
+        },
+        format="json",
+    )
+
+    client.force_authenticate(artist_user)
+    forbidden_response = client.post(
+        f"/api/v1/logistics/guests/{guest.id}/accommodations/",
+        {},
+        format="json",
+    )
+
+    assert travel_response.status_code == 201
+    assert travel_response.data["has_private_document"] is True
+    assert "private_document_key" not in travel_response.data
+    assert accommodation_response.status_code == 201
+    assert forbidden_response.status_code == 403

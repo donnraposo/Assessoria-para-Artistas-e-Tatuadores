@@ -3,4 +3,4 @@ djangorestframework>=3.16,<3.17
 django-cors-headers>=4.7,<5.0
 psycopg[binary]>=3.2,<3.3
 gunicorn>=23.0,<24.0
-
+boto3>=1.40,<2.0

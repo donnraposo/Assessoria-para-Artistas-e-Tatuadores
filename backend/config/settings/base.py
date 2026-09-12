@@ -122,6 +122,15 @@ FRONTEND_PASSWORD_RESET_URL = os.getenv(
     "http://localhost:3000/redefinir-senha",
 )
 
+S3_ENDPOINT_URL = os.getenv("S3_ENDPOINT_URL", "http://minio:9000")
+S3_PUBLIC_ENDPOINT_URL = os.getenv("S3_PUBLIC_ENDPOINT_URL", "http://localhost:9000")
+S3_ACCESS_KEY_ID = os.getenv("S3_ACCESS_KEY_ID", "atria-local")
+S3_SECRET_ACCESS_KEY = os.getenv("S3_SECRET_ACCESS_KEY", "atria-local-secret")
+S3_BUCKET_NAME = os.getenv("S3_BUCKET_NAME", "atria-private")
+S3_REGION_NAME = os.getenv("S3_REGION_NAME", "us-east-1")
+S3_UPLOAD_EXPIRATION_SECONDS = int(os.getenv("S3_UPLOAD_EXPIRATION_SECONDS", "900"))
+S3_DOWNLOAD_EXPIRATION_SECONDS = int(os.getenv("S3_DOWNLOAD_EXPIRATION_SECONDS", "300"))
+
 CACHES = {"default": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache"}}
 REST_FRAMEWORK["DEFAULT_THROTTLE_RATES"] = {
     "login": "5/minute",

@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { queueDefinitions } from "@/content/dashboard";
@@ -16,9 +17,14 @@ import {
 import { formatCurrency } from "@/lib/format";
 
 import { ActivityList } from "./ActivityList";
+import { ErrorScreen } from "./ErrorScreen";
+import { Icon } from "./Icon";
+import { LoadingScreen } from "./LoadingScreen";
+import { PageHeading } from "./PageHeading";
 import { QueueCard } from "./QueueCard";
 import { RoleWorkspaceDashboard } from "./RoleWorkspaceDashboard";
 import { Sidebar } from "./Sidebar";
+import { WorkspaceHeader } from "./WorkspaceHeader";
 
 export function Dashboard() {
   const router = useRouter();
@@ -46,12 +52,8 @@ export function Dashboard() {
       });
   }, [router]);
 
-  if (error) {
-    return <main className="centered-state"><h1>Unable to load operations.</h1><p>{error}</p></main>;
-  }
-  if (!user || (!dashboard && !roleWorkspace)) {
-    return <main className="centered-state"><span className="loader" /><p>Loading operations…</p></main>;
-  }
+  if (error) return <ErrorScreen message={error} title="Unable to load operations." />;
+  if (!user || (!dashboard && !roleWorkspace)) return <LoadingScreen message="Loading operations…" />;
 
   const handleSignOut = () => logout().then(() => router.replace("/login"));
   if (roleWorkspace) {
@@ -66,41 +68,76 @@ export function Dashboard() {
     <main className="shell">
       <Sidebar name={user.full_name} role={role} />
       <section className="workspace">
-        <header className="topbar">
-          <div><small>LIVE OPERATIONS</small><h1>Good to see you, {user.full_name.split(" ")[0]}.</h1></div>
-          <div className="topbar-actions">
-            <span className="notification-count">{dashboard.unread_notifications} unread</span>
-            <button onClick={handleSignOut}>Sign out</button>
+        <WorkspaceHeader
+          eyebrow="Live operations"
+          onSignOut={handleSignOut}
+          title={`Good to see you, ${user.full_name.split(" ")[0]}.`}
+        >
+          <span className="notification-count">
+            <Icon name="bell" />
+            {dashboard.unread_notifications} unread
+          </span>
+        </WorkspaceHeader>
+        <section className="dashboard-hero">
+          <div className="hero-copy">
+            <small>THE ART MOVES. WE MAKE IT FLOW.</small>
+            <h2>Build remarkable Guest experiences.</h2>
+            <p>One precise workspace for artists, Studios, bookings, travel and growth.</p>
+            <div className="hero-actions">
+              <Link className="primary-action" href="/operations/create">
+                <Icon name="create" />
+                Create operation
+              </Link>
+              <span><strong>{totalQueue}</strong> items need attention</span>
+            </div>
           </div>
-        </header>
-        <section className="page-heading">
-          <div><h2>Operations overview</h2><p>Everything that needs attention, in one place.</p></div>
-          <span className="live-indicator"><i />Live</span>
         </section>
+        <PageHeading
+          aside={<span className="live-indicator"><i />Live</span>}
+          description="Everything that needs a decision from the Advisory team, in one place."
+          eyebrow="Today"
+          title="Operations overview"
+        />
         <section className="summary-grid">
           <article className="summary-card accent-card">
-            <small>Items requiring attention</small><strong>{totalQueue}</strong><p>Across all operational queues</p>
+            <span className="card-mark"><Icon name="alert" /></span>
+            <small>Items requiring attention</small>
+            <strong>{totalQueue}</strong>
+            <p>Across all operational queues</p>
           </article>
           {dashboard.agency_revenue_by_currency.length > 0 ? (
             dashboard.agency_revenue_by_currency.slice(0, 2).map((entry) => (
               <article className="summary-card" key={entry.currency}>
+                <span className="card-mark"><Icon name="revenue" /></span>
                 <small>Confirmed agency revenue</small>
                 <strong>{formatCurrency(entry.total, entry.currency)}</strong>
-                <p>{entry.currency} · Recorded closings</p>
+                <p>{entry.currency} · 20% received on closed sales</p>
               </article>
             ))
           ) : (
-            <article className="summary-card"><small>Confirmed agency revenue</small><strong>—</strong><p>No closings recorded yet</p></article>
+            <article className="summary-card">
+              <span className="card-mark"><Icon name="revenue" /></span>
+              <small>Confirmed agency revenue</small>
+              <strong>—</strong>
+              <p>No closings recorded yet</p>
+            </article>
           )}
         </section>
-        <section className="section-heading"><div><h3>Action queues</h3><p>Prioritized work for the Advisory team.</p></div></section>
+        <PageHeading
+          description="Each card opens the list of records waiting for you."
+          eyebrow="Workflow"
+          title="Action queues"
+        />
         <section className="queue-grid">
           {queueDefinitions.map((queue) => (
             <QueueCard
               key={queue.key}
               label={queue.label}
               detail={queue.detail}
+              hint={queue.hint}
+              icon={queue.icon}
               value={dashboard.queues[queue.key] ?? 0}
+              href={`/operations/${queue.slug}`}
             />
           ))}
         </section>

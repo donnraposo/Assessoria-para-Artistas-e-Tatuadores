@@ -31,9 +31,19 @@ Registrar o contrato HTTP versionado implementado pelo MVP.
 - `POST /api/v1/auth/login/` e `POST /api/v1/auth/logout/`.
 - `GET /api/v1/auth/me/`: usuário e papéis correntes.
 - `GET /api/v1/operations/dashboard/`: visão global exclusiva da Assessoria.
-- `GET /api/v1/operations/queues/{queue_name}/`: fila administrativa paginada.
+- `GET /api/v1/operations/queues/{queue_name}/`: fila administrativa paginada;
+  aceita `artist-applications`, `studios`, `guest-proposals`,
+  `studio-reservations`, `open-leads`, `cancellations` e `logistics`.
 - `GET /api/v1/operations/workspace/`: visão isolada de Artist ou Studio.
+- `GET /api/v1/operations/reference-data/`: Artists e Studios aprovados e Guests disponíveis para criação administrativa; exclusivo da Assessoria.
+- `GET /api/v1/studios/me/booking-requests/`: solicitações pertencentes ao Studio autenticado.
+- `GET /api/v1/guests/`: Guests globais para Assessoria ou próprios para Artist; Studio é bloqueado.
 - `GET /api/v1/notifications/` e `POST /api/v1/notifications/{id}/read/`.
+- `GET /api/v1/artists/me/portfolio/`: metadados do portfólio próprio, sem chave privada.
+- `POST /api/v1/artists/me/portfolio/uploads/`: solicitação de URL assinada para upload.
+- `POST /api/v1/artists/me/portfolio/uploads/{upload_id}/confirm/`: inspeção e confirmação do arquivo enviado.
+- `GET /api/v1/artists/me/portfolio/{item_id}/access/`: URL privada temporária de leitura.
+- `DELETE /api/v1/artists/me/portfolio/{item_id}/`: exclusão do objeto e seus metadados.
 
 ## 5. Endpoints operacionais implementados
 
@@ -42,6 +52,8 @@ Registrar o contrato HTTP versionado implementado pelo MVP.
 - `POST /api/v1/schedule/appointments/{appointment_id}/cancellation-requests/`: solicitação do Artista.
 - `POST /api/v1/schedule/cancellation-requests/{cancellation_id}/decide/`: decisão da Assessoria.
 - `GET|POST /api/v1/sales/leads/`: registro e consulta administrativa de Leads.
+- `POST /api/v1/guests/proposals/`: criação de proposta administrativa.
+- `POST /api/v1/studios/booking-requests/`: criação de solicitação de reserva pela Assessoria.
 - `POST /api/v1/sales/leads/{lead_id}/close/`: recebimento e fechamento transacional 20/80.
 - `GET|POST /api/v1/marketing/campaigns/`: campanhas e orçamento autorizado.
 - `POST /api/v1/marketing/campaigns/{campaign_id}/spend/`: gasto efetivo de Ads.

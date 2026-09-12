@@ -8,6 +8,8 @@ if SECRET_KEY == "unsafe-development-key" or len(SECRET_KEY) < 50:  # noqa: F405
     raise ImproperlyConfigured("DJANGO_SECRET_KEY must contain at least 50 characters.")
 
 DEBUG = False
+if S3_SECRET_ACCESS_KEY == "atria-local-secret":  # noqa: F405
+    raise ImproperlyConfigured("S3_SECRET_ACCESS_KEY must be configured for production.")
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 SECURE_SSL_REDIRECT = os.getenv("DJANGO_SECURE_SSL_REDIRECT", "true").lower() == "true"

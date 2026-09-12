@@ -6,6 +6,12 @@ Catalogar integrações externas sem tornar o núcleo do domínio dependente del
 
 ## 2. Futuras
 
+### Armazenamento S3 — implementado
+
+O portfólio usa contrato compatível com S3, bucket privado, upload direto por URL
+assinada e acesso temporário. MinIO atende desenvolvimento; produção deve fornecer
+endpoint e credenciais próprios de S3 ou R2.
+
 ### Google Calendar
 
 Integração futura para sincronização de disponibilidade e agendamentos. A plataforma permanece como fonte oficial no MVP.

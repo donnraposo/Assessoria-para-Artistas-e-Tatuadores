@@ -1,10 +1,13 @@
 import pytest
 from rest_framework.test import APIClient
 
+from modules.artists.infrastructure.persistence.models import ArtistApplication
 from modules.finance.domain.enums import FinancialEntryStatus, FinancialEntryType
 from modules.finance.infrastructure.persistence.models import FinancialEntry
 from modules.identity.domain.enums import RoleType
 from modules.identity.infrastructure.persistence.models import Role, User, UserRole
+from modules.logistics.domain.enums import LogisticsStatus, TravelSegmentType
+from modules.logistics.infrastructure.persistence.models import TravelSegment
 from tests.sales.test_closing import build_scenario
 
 
@@ -24,6 +27,7 @@ def test_advisory_dashboard_and_queue_are_paginated() -> None:
     assert queue.status_code == 200
     assert queue.data["count"] == 1
     assert len(queue.data["results"]) == 1
+    assert queue.data["results"][0]["appointment_id"] is not None
 
 
 @pytest.mark.django_db
@@ -86,3 +90,58 @@ def test_studio_workspace_does_not_expose_commercial_data() -> None:
     assert "agency_revenue" not in serialized
     assert "artist_receivable" not in serialized
     assert "open_leads" not in serialized
+
+
+@pytest.mark.django_db
+def test_logistics_queue_exposes_operational_fields_without_private_documents() -> None:
+    _, advisory, guest, _, appointment = build_scenario("logistics-queue")
+    role = Role.objects.create(code=RoleType.ADVISORY, name="Advisory")
+    UserRole.objects.create(user=advisory, role=role)
+    TravelSegment.objects.create(
+        guest=guest,
+        segment_type=TravelSegmentType.OUTBOUND,
+        origin="Rio de Janeiro",
+        destination="Sao Paulo",
+        departs_at=appointment.starts_at,
+        arrives_at=appointment.ends_at,
+        origin_timezone="America/Sao_Paulo",
+        destination_timezone="America/Sao_Paulo",
+        private_document_key="private/ticket.pdf",
+        status=LogisticsStatus.PENDING,
+        currency="BRL",
+        created_by=advisory,
+    )
+    client = APIClient()
+    client.force_authenticate(advisory)
+
+    response = client.get("/api/v1/operations/queues/logistics/")
+
+    assert response.status_code == 200
+    assert response.data["count"] == 1
+    assert response.data["results"][0]["item_type"] == "Travel segment"
+    assert "private_document_key" not in response.data["results"][0]
+
+
+@pytest.mark.django_db
+def test_reference_data_is_available_only_to_advisory() -> None:
+    artist_user, advisory, _, _, appointment = build_scenario("reference-data")
+    advisory_role = Role.objects.create(code=RoleType.ADVISORY, name="Advisory")
+    artist_role = Role.objects.create(code=RoleType.ARTIST, name="Artist")
+    UserRole.objects.create(user=advisory, role=advisory_role)
+    UserRole.objects.create(user=artist_user, role=artist_role)
+    ArtistApplication.objects.create(
+        artist=artist_user.artistprofile,
+        status="APPROVED",
+    )
+    client = APIClient()
+
+    client.force_authenticate(advisory)
+    advisory_response = client.get("/api/v1/operations/reference-data/")
+    client.force_authenticate(artist_user)
+    artist_response = client.get("/api/v1/operations/reference-data/")
+
+    assert advisory_response.status_code == 200
+    assert advisory_response.data["artists"][0]["id"] == artist_user.artistprofile.id
+    assert advisory_response.data["studios"][0]["id"] == appointment.studio.id
+    assert len(advisory_response.data["guests"]) == 1
+    assert artist_response.status_code == 403
