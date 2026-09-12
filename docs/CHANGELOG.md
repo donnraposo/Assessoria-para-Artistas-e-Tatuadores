@@ -1,5 +1,40 @@
 # Histórico de Alterações
 
+## 2026-09-12 — Regras de negócio pendentes e correções de API
+
+- Adicionado auto-cadastro de Artista e Studio (`POST /api/v1/auth/register/`),
+  com atribuição de papel, validação de senha e login automático (RN-004, RN-026).
+- Adicionada intervenção excepcional da Assessoria na disponibilidade do Artista
+  (`POST /api/v1/artists/{artist_id}/availability/override/`), com motivo
+  obrigatório e auditoria (RN-008).
+- Adicionadas edição e remoção de disponibilidade pelo próprio Artista
+  (`PATCH|DELETE /api/v1/artists/me/availability/{id}/`), bloqueadas para janelas
+  geridas pela Assessoria e protegidas contra remoção/redução com agendamento
+  confirmado no intervalo (RN-007).
+- Adicionadas recusa e cancelamento de Proposta de Guest com motivo obrigatório
+  (`POST /api/v1/guests/proposals/{id}/transition/`) (RN-010).
+- Adicionados Studios adicionais por Guest com bloqueio de sobreposição de
+  horário (`GET|POST /api/v1/guests/{id}/studios/`) (RN-015).
+- Adicionado registro pela Assessoria de negociação de reserva de Studio fechada
+  por canal externo (`POST /api/v1/studios/booking-requests/{id}/external-response/`)
+  (RN-032).
+- Adicionada atualização do status de pagamento do Studio, `Pendente` ou `Pago`
+  (`PATCH /api/v1/studios/bookings/{id}/payment/`) (RN-033).
+- Adicionada API de bancadas, preços e disponibilidade do Studio
+  (`GET|POST /api/v1/studios/me/{workstations,prices,availability}/`), antes
+  existentes apenas como modelos sem exposição via API (RN-029).
+- Adicionada API de Finance: resumo de saldo por Guest e confirmação de
+  recebimento externo do Artista ou de devolução, encerrando o estado "previsto"
+  quando confirmado (`GET /api/v1/finance/guests/{id}/summary/`,
+  `POST /api/v1/finance/entries/{id}/confirm/`) (RN-025, RN-040).
+- Corrigida a confirmação de reserva de Studio, que tratava o Studio inteiro
+  como uma única bancada e não protegia contra confirmações concorrentes da
+  mesma janela; agora considera a bancada informada (ou a capacidade do Studio)
+  e trava a confirmação por Studio (RN-020).
+- Corrigida a criação do primeiro perfil de Artista (`PUT /api/v1/artists/me/`),
+  que falhava com erro 500 por gravar um registro em branco antes de aplicar os
+  dados enviados.
+
 ## 2026-09-12 — Reformulação de experiência e design system
 
 - Substituída a numeração editorial da navegação por sistema de ícones SVG inline,

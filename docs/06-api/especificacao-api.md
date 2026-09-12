@@ -28,6 +28,7 @@ Registrar o contrato HTTP versionado implementado pelo MVP.
 - `GET /api/v1/health/`: vida do processo.
 - `GET /api/v1/ready/`: prontidão do processo e banco.
 - `GET /api/v1/auth/csrf/`: token CSRF.
+- `POST /api/v1/auth/register/`: auto-cadastro de Artista ou Studio, com login automático.
 - `POST /api/v1/auth/login/` e `POST /api/v1/auth/logout/`.
 - `GET /api/v1/auth/me/`: usuário e papéis correntes.
 - `GET /api/v1/operations/dashboard/`: visão global exclusiva da Assessoria.
@@ -63,3 +64,15 @@ Registrar o contrato HTTP versionado implementado pelo MVP.
 - `GET|POST /api/v1/logistics/guests/{guest_id}/accommodations/`: acomodações do Guest.
 - `PATCH /api/v1/logistics/accommodations/{accommodation_id}/`: atualização administrativa da acomodação.
 - `GET /api/v1/logistics/guests/{guest_id}/my-trip/`: visão consolidada autorizada.
+- `POST /api/v1/artists/{artist_id}/availability/override/`: intervenção excepcional da Assessoria na disponibilidade do Artista, com motivo obrigatório e auditoria.
+- `PATCH|DELETE /api/v1/artists/me/availability/{availability_id}/`: edição e remoção de disponibilidade pelo próprio Artista, bloqueada para janelas geridas pela Assessoria ou com agendamento confirmado.
+- `POST /api/v1/guests/proposals/{proposal_id}/transition/`: recusa ou cancelamento de Proposta com motivo obrigatório.
+- `GET|POST /api/v1/guests/{guest_id}/studios/`: Studios adicionais do Guest, com bloqueio de sobreposição de horário.
+- `GET|POST /api/v1/studios/me/workstations/`: bancadas do Studio autenticado.
+- `GET|POST /api/v1/studios/me/prices/`: modalidades e valores de cobrança do Studio autenticado.
+- `GET|POST /api/v1/studios/me/availability/`: disponibilidade por bancada do Studio autenticado.
+- `POST /api/v1/studios/booking-requests/{request_id}/external-response/`: registro pela Assessoria de negociação de reserva fechada por canal externo.
+- `POST /api/v1/studios/booking-requests/{request_id}/confirm/`: confirmação transacional considerando bancada (quando informada) ou capacidade do Studio, com trava de concorrência.
+- `PATCH /api/v1/studios/bookings/{booking_id}/payment/`: atualização do status de pagamento do Studio (`Pendente`/`Pago`).
+- `GET /api/v1/finance/guests/{guest_id}/summary/`: receita da Assessoria, saldo previsto/confirmado do Artista e reembolsos devidos.
+- `POST /api/v1/finance/entries/{entry_id}/confirm/`: confirmação administrativa de um lançamento (recebimento externo do Artista ou reembolso).
