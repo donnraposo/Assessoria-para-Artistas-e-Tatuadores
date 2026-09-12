@@ -41,6 +41,9 @@ Registrar o contrato HTTP versionado implementado pelo MVP.
 - `POST /api/v1/artists/{artist_id}/availability/override/`: intervenção excepcional da Assessoria na disponibilidade do Artista, com motivo obrigatório e auditoria.
 - `POST /api/v1/guests/proposals/{proposal_id}/transition/`: recusa ou cancelamento de Proposta com motivo obrigatório.
 - `GET|POST /api/v1/guests/{guest_id}/studios/`: Studios adicionais do Guest, com bloqueio de sobreposição de horário.
+- `GET|POST /api/v1/studios/me/workstations/`: bancadas do Studio autenticado.
+- `GET|POST /api/v1/studios/me/prices/`: modalidades e valores de cobrança do Studio autenticado.
+- `GET|POST /api/v1/studios/me/availability/`: disponibilidade por bancada do Studio autenticado.
 - `POST /api/v1/studios/booking-requests/{request_id}/external-response/`: registro pela Assessoria de negociação de reserva fechada por canal externo.
 - `PATCH /api/v1/studios/bookings/{booking_id}/payment/`: atualização do status de pagamento do Studio (`Pendente`/`Pago`).
 - `GET|POST /api/v1/schedule/appointments/`: agenda autorizada e criação administrativa.

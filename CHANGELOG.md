@@ -31,6 +31,7 @@ Todas as alterações relevantes do projeto serão registradas neste arquivo.
 - Registro pela Assessoria de negociação de reserva de Studio fechada por canal externo (RN-032).
 - Atualização do status de pagamento do Studio, `Pendente` ou `Pago` (RN-033).
 - API de Finance: resumo de saldo por Guest e confirmação de recebimento externo do Artista, encerrando o "previsto" quando confirmado (RN-040).
+- API de bancadas, preços e disponibilidade do Studio, antes existentes apenas como modelos sem exposição via API (RN-029).
 
 ### Corrigido
 
