@@ -19,6 +19,7 @@ describe("buildAdvisoryForms", () => {
       "appointment",
       "campaign",
       "travel",
+      "guest_studio",
       "accommodation",
     ]);
   });

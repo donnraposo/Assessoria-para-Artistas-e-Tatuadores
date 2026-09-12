@@ -77,11 +77,36 @@ async function putWithCsrf<T>(path: string, body: Record<string, unknown>): Prom
   });
 }
 
+async function patchWithCsrf<T>(path: string, body: Record<string, unknown>): Promise<T> {
+  const token = await csrfToken();
+  return requestJson<T>(path, {
+    method: "PATCH",
+    headers: { "X-CSRFToken": token },
+    body: JSON.stringify(body),
+  });
+}
+
 async function deleteWithCsrf(path: string): Promise<void> {
   const token = await csrfToken();
   await requestJson<void>(path, {
     method: "DELETE",
     headers: { "X-CSRFToken": token },
+  });
+}
+
+export type SelfServiceRole = "ARTIST" | "STUDIO";
+
+export function register(input: {
+  fullName: string;
+  email: string;
+  password: string;
+  role: SelfServiceRole;
+}): Promise<CurrentUser> {
+  return postWithCsrf<CurrentUser>("/auth/register/", {
+    full_name: input.fullName,
+    email: input.email,
+    password: input.password,
+    role: input.role,
   });
 }
 
@@ -142,6 +167,16 @@ export function decideCancellation(id: string, approved: boolean, reason: string
   return postWithCsrf(`/schedule/cancellation-requests/${id}/decide/`, { approved, reason });
 }
 
+export type ProposalTransitionTarget = "DECLINED" | "CANCELLED";
+
+export function transitionGuestProposal(id: string, target: ProposalTransitionTarget, reason: string) {
+  return postWithCsrf(`/guests/proposals/${id}/transition/`, { status: target, reason });
+}
+
+export function registerExternalStudioResponse(id: string, accepted: boolean, reason: string) {
+  return postWithCsrf(`/studios/booking-requests/${id}/external-response/`, { accepted, reason });
+}
+
 export type LeadClosingInput = {
   appointmentId: string;
   finalValue: string;
@@ -186,6 +221,8 @@ export type ArtistAvailability = {
   starts_at: string;
   ends_at: string;
   timezone: string;
+  changed_by_advisory: boolean;
+  change_reason: string;
 };
 
 export type ArtistProfileInput = Omit<ArtistProfile, "id">;
@@ -210,8 +247,26 @@ export function getArtistAvailability() {
   return requestJson<ArtistAvailability[]>("/artists/me/availability/");
 }
 
-export function createArtistAvailability(input: Omit<ArtistAvailability, "id">) {
+export type ArtistAvailabilityInput = Pick<ArtistAvailability, "starts_at" | "ends_at" | "timezone">;
+
+export function createArtistAvailability(input: ArtistAvailabilityInput) {
   return postWithCsrf<ArtistAvailability>("/artists/me/availability/", input);
+}
+
+export function updateArtistAvailability(id: string, input: ArtistAvailabilityInput) {
+  return patchWithCsrf<ArtistAvailability>(`/artists/me/availability/${id}/`, input);
+}
+
+export function deleteArtistAvailability(id: string) {
+  return deleteWithCsrf(`/artists/me/availability/${id}/`);
+}
+
+export function getArtistAvailabilityFor(artistId: string) {
+  return requestJson<ArtistAvailability[]>(`/artists/${artistId}/availability/`);
+}
+
+export function overrideArtistAvailability(artistId: string, input: ArtistAvailabilityInput & { reason: string }) {
+  return postWithCsrf<ArtistAvailability>(`/artists/${artistId}/availability/override/`, input);
 }
 
 export type StudioProfile = {
@@ -265,6 +320,82 @@ export function respondToStudioBooking(id: string, accepted: boolean, reason: st
   });
 }
 
+export type Workstation = {
+  id: string;
+  name: string;
+  is_active: boolean;
+};
+
+export type WorkstationInput = Pick<Workstation, "name">;
+
+export function getWorkstations() {
+  return requestJson<Workstation[]>("/studios/me/workstations/");
+}
+
+export function createWorkstation(input: WorkstationInput) {
+  return postWithCsrf<Workstation>("/studios/me/workstations/", input);
+}
+
+export type StudioPrice = {
+  id: string;
+  pricing_type: string;
+  amount: string;
+  currency: string;
+  conditions: string;
+  valid_from: string;
+  valid_until: string | null;
+};
+
+export type StudioPriceInput = Omit<StudioPrice, "id">;
+
+export function getStudioPrices() {
+  return requestJson<StudioPrice[]>("/studios/me/prices/");
+}
+
+export function createStudioPrice(input: StudioPriceInput) {
+  return postWithCsrf<StudioPrice>("/studios/me/prices/", input);
+}
+
+export type StudioAvailabilitySlot = {
+  id: string;
+  workstation: string | null;
+  starts_at: string;
+  ends_at: string;
+  capacity: number;
+  timezone: string;
+};
+
+export type StudioAvailabilitySlotInput = Omit<StudioAvailabilitySlot, "id">;
+
+export function getStudioAvailabilitySlots() {
+  return requestJson<StudioAvailabilitySlot[]>("/studios/me/availability/");
+}
+
+export function createStudioAvailabilitySlot(input: StudioAvailabilitySlotInput) {
+  return postWithCsrf<StudioAvailabilitySlot>("/studios/me/availability/", input);
+}
+
+export type StudioBooking = {
+  id: string;
+  studio: string;
+  workstation: string | null;
+  starts_at: string;
+  ends_at: string;
+  timezone: string;
+  payment_status: "PENDING" | "PAID";
+  confirmed_at: string;
+};
+
+export function getGuestStudioBookings(guestId: string) {
+  return requestJson<StudioBooking[]>(`/studios/guests/${guestId}/bookings/`);
+}
+
+export function updateStudioBookingPaymentStatus(bookingId: string, paymentStatus: "PENDING" | "PAID") {
+  return patchWithCsrf<StudioBooking>(`/studios/bookings/${bookingId}/payment/`, {
+    payment_status: paymentStatus,
+  });
+}
+
 export type Guest = {
   id: string;
   city: string;
@@ -275,6 +406,36 @@ export type Guest = {
   currency: string;
   status: string;
 };
+
+export type FinancialEntry = {
+  id: string;
+  guest: string;
+  closing: string | null;
+  entry_type: "AGENCY_REVENUE" | "ARTIST_RECEIVABLE" | "ARTIST_REFUND_DUE";
+  status: "CONFIRMED" | "EXPECTED" | "DUE";
+  amount: string;
+  currency: string;
+  source_reference: string;
+  created_at: string;
+};
+
+export type GuestFinanceSummary = {
+  currency: string;
+  agency_revenue_confirmed: string;
+  artist_receivable_expected: string;
+  artist_receivable_confirmed: string;
+  artist_refund_due: string;
+  artist_refund_confirmed: string;
+  entries: FinancialEntry[];
+};
+
+export function getGuestFinanceSummary(guestId: string) {
+  return requestJson<GuestFinanceSummary>(`/finance/guests/${guestId}/summary/`);
+}
+
+export function confirmFinancialEntry(entryId: string, reference: string) {
+  return postWithCsrf<FinancialEntry>(`/finance/entries/${entryId}/confirm/`, { reference });
+}
 
 export type Appointment = {
   id: string;
@@ -373,7 +534,7 @@ export type OperationsReferenceData = {
   guests: Array<{ id: string; artist_id: string; city: string; country_code: string; currency: string; starts_on: string; ends_on: string; status: string }>;
 };
 
-export type AdvisoryRecordKind = "proposal" | "reservation" | "lead" | "appointment" | "campaign" | "travel" | "accommodation";
+export type AdvisoryRecordKind = "proposal" | "reservation" | "lead" | "appointment" | "campaign" | "travel" | "accommodation" | "guest_studio";
 
 export function getOperationsReferenceData() {
   return requestJson<OperationsReferenceData>("/operations/reference-data/");
@@ -389,8 +550,9 @@ export function createAdvisoryRecord(kind: AdvisoryRecordKind, input: Record<str
     campaign: "/marketing/campaigns/",
     travel: `/logistics/guests/${guestId}/travel-segments/`,
     accommodation: `/logistics/guests/${guestId}/accommodations/`,
+    guest_studio: `/guests/${guestId}/studios/`,
   };
-  const body = ["travel", "accommodation"].includes(kind)
+  const body = ["travel", "accommodation", "guest_studio"].includes(kind)
     ? Object.fromEntries(Object.entries(input).filter(([key]) => key !== "guest"))
     : input;
   return postWithCsrf(paths[kind], body);

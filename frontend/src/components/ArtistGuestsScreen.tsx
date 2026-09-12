@@ -3,10 +3,11 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { getCurrentUser, getGuests, getMyTrip, logout, type CurrentUser, type Guest, type MyTrip } from "@/lib/api";
+import { getCurrentUser, getGuestFinanceSummary, getGuests, getMyTrip, logout, type CurrentUser, type Guest, type GuestFinanceSummary, type MyTrip } from "@/lib/api";
 
 import { EmptyState } from "./EmptyState";
 import { ErrorScreen } from "./ErrorScreen";
+import { GuestFinancePanel } from "./GuestFinancePanel";
 import { Icon } from "./Icon";
 import { LoadingScreen } from "./LoadingScreen";
 import { MyTripPanel } from "./MyTripPanel";
@@ -20,6 +21,7 @@ export function ArtistGuestsScreen() {
   const [user, setUser] = useState<CurrentUser | null>(null);
   const [guests, setGuests] = useState<Guest[] | null>(null);
   const [trip, setTrip] = useState<MyTrip | null>(null);
+  const [finance, setFinance] = useState<GuestFinanceSummary | null>(null);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -44,6 +46,15 @@ export function ArtistGuestsScreen() {
       setTrip(await getMyTrip(guestId));
     } catch (requestError) {
       setError(requestError instanceof Error ? requestError.message : "Unable to load My Trip.");
+    }
+  };
+
+  const loadFinance = async (guestId: string) => {
+    setError("");
+    try {
+      setFinance(await getGuestFinanceSummary(guestId));
+    } catch (requestError) {
+      setError(requestError instanceof Error ? requestError.message : "Unable to load Finance.");
     }
   };
 
@@ -73,10 +84,12 @@ export function ArtistGuestsScreen() {
               <h3>{guest.city}, {guest.country_code}</h3>
               <p>{guest.starts_on} — {guest.ends_on}</p>
               <button onClick={() => loadTrip(guest.id)} type="button"><Icon name="trip" />View My Trip</button>
+              <button onClick={() => loadFinance(guest.id)} type="button"><Icon name="revenue" />View Finance</button>
             </article>
           ))}
         </div>
         {trip && <MyTripPanel trip={trip} />}
+        {finance && <GuestFinancePanel summary={finance} />}
       </section>
     </main>
   );

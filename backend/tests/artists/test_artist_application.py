@@ -71,3 +71,27 @@ def test_application_endpoint_repairs_missing_application_for_existing_profile()
     assert response.status_code == 200
     assert response.data["status"] == ApplicationStatus.DRAFT
     assert ArtistApplication.objects.filter(artist__user=user).count() == 1
+
+
+@pytest.mark.django_db
+def test_first_profile_creation_creates_application_via_api() -> None:
+    user = User.objects.create_user(email="first-profile@example.com", full_name="Artist")
+    role = Role.objects.create(code=RoleType.ARTIST, name="Artista")
+    UserRole.objects.create(user=user, role=role)
+    client = APIClient()
+    client.force_authenticate(user)
+
+    response = client.put(
+        "/api/v1/artists/me/",
+        {
+            "professional_name": "Ink",
+            "styles": ["blackwork"],
+            "minimum_tattoo_value": "500",
+            "expected_ticket": "900",
+        },
+        format="json",
+    )
+
+    assert response.status_code == 200
+    profile = ArtistProfile.objects.get(user=user)
+    assert ArtistApplication.objects.filter(artist=profile).exists()

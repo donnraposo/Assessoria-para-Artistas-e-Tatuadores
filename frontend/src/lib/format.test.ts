@@ -35,6 +35,8 @@ describe("statusTone", () => {
   it("maps states waiting for a decision to the warning tone", () => {
     expect(statusTone("UNDER_REVIEW")).toBe("warning");
     expect(statusTone("PENDING")).toBe("warning");
+    expect(statusTone("EXPECTED")).toBe("warning");
+    expect(statusTone("DUE")).toBe("warning");
   });
 
   it("maps states in progress to the info tone", () => {

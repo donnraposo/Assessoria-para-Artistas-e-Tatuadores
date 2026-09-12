@@ -211,9 +211,16 @@ disponíveis no frontend e a homologação visual/manual seja registrada.
 
 **Implementado:** dashboard Advisory, sete filas paginadas, atividade auditada,
 workspaces isolados para Artist e Studio e ações de revisão, proposta, reserva,
-cancelamento e fechamento financeiro. O Django Admin permanece reservado à operação
-técnica autenticada. Criação e edição completa dos registros ainda serão entregues
-nas áreas transacionais de cada perfil.
+cancelamento e fechamento financeiro. Adicionadas nas filas `guest_proposals` e
+`studio_reservations` as ações de recusa/cancelamento de proposta (RN-010) e de
+registro de negociação externa de reserva (RN-032). Adicionadas as telas
+`/operations/guests` (saldo financeiro do Guest e status de pagamento das
+reservas de Studio — RN-025/040 e RN-033) e `/operations/artists`
+(disponibilidade do Artista e intervenção excepcional com motivo obrigatório
+— RN-008), cada uma com dois endpoints de leitura novos e exclusivos da
+Assessoria. O Django Admin permanece reservado à operação técnica
+autenticada. Criação e edição completa dos demais registros ainda serão
+entregues nas áreas transacionais de cada perfil.
 
 ### S09.02 — Notificações e tarefas
 
@@ -242,15 +249,22 @@ produção, runbooks e restauração real em banco temporário.
 - Executar smoke test em homologação e plano de rollback.
 - **Aceite final:** Guest planejado, confirmado, preenchido, executado e acompanhado sem área do Cliente final.
 
-**Em andamento:** a Assessoria já possui filas, decisões principais e uma bancada
-transacional para criar propostas, reservas, Leads, agendamentos e campanhas; Artist já
-possui perfil, candidatura e disponibilidade; Studio já possui perfil, submissão e
-resposta a reservas. Artist também consulta Guests, agenda, cancelamentos, My Trip e
-metadados do portfólio. O design system foi atualizado para uma linguagem editorial
-urbana própria do universo da tatuagem, mantendo tokens CSS centralizados. A criação
-de viagem e acomodação também está disponível na bancada. O upload privado do portfólio
-foi concluído. Permanecem teste visual responsivo/teclado/contraste e
-homologação manual ponta a ponta. Login, dashboards, API e smoke HTTP já passaram.
+**Em andamento:** a Assessoria já possui filas, decisões principais, uma bancada
+transacional para criar propostas, reservas, Leads, agendamentos, campanhas e Studio
+adicional em um Guest (RN-015), além das telas de Guests (saldo financeiro e
+pagamento de reservas — RN-025/040, RN-033) e Artists (intervenção excepcional de
+disponibilidade — RN-008); Artist já possui perfil, candidatura, disponibilidade
+com edição e remoção (RN-007), consulta ao próprio saldo financeiro e tela de
+auto-cadastro (RN-004/026); Studio já possui perfil, submissão, resposta a reservas
+e cadastro próprio de bancadas, preços e disponibilidade (RN-029). Artist também
+consulta Guests, agenda, cancelamentos, My Trip e metadados do portfólio. O design
+system foi atualizado para uma linguagem editorial urbana própria do universo da
+tatuagem, mantendo tokens CSS centralizados. A criação de viagem e acomodação
+também está disponível na bancada. O upload privado do portfólio foi concluído.
+Com a Fase C, as 9 regras de negócio identificadas na auditoria de 2026-09-12 têm
+cobertura completa de API e interface. Permanecem apenas teste visual
+responsivo/teclado/contraste e homologação manual ponta a ponta. Login, dashboards,
+API e smoke HTTP já passaram.
 
 ## Gate obrigatório por tarefa
 
