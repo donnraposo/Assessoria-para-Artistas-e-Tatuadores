@@ -1,5 +1,6 @@
 from django.urls import path
 
+from .views.artist_application_detail_view import ArtistApplicationDetailView
 from .views.artist_application_review_view import ArtistApplicationReviewView
 from .views.artist_application_view import ArtistApplicationView
 from .views.artist_profile_view import ArtistProfileView
@@ -11,6 +12,11 @@ urlpatterns = [
     path("me/application/", ArtistApplicationView.as_view(), name="artist-application"),
     path("me/portfolio/", PortfolioCollectionView.as_view(), name="artist-portfolio"),
     path("me/availability/", AvailabilityCollectionView.as_view(), name="artist-availability"),
+    path(
+        "applications/<uuid:application_id>/",
+        ArtistApplicationDetailView.as_view(),
+        name="artist-application-detail",
+    ),
     path(
         "applications/<uuid:application_id>/review/",
         ArtistApplicationReviewView.as_view(),

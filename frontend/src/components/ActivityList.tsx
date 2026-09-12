@@ -1,5 +1,5 @@
-import type { Activity } from "@/lib/api";
-import { humanizeAction } from "@/lib/format";
+import type { Activity } from "@/lib/types/operations";
+import { formatShortDate, humanizeAction } from "@/lib/format";
 
 type ActivityListProps = { activities: Activity[] };
 
@@ -16,12 +16,7 @@ export function ActivityList({ activities }: ActivityListProps) {
             <strong>{humanizeAction(activity.action)}</strong>
             <small>{activity.resource_type}</small>
           </span>
-          <time dateTime={activity.created_at}>
-            {new Date(activity.created_at).toLocaleDateString("en-US", {
-              month: "short",
-              day: "numeric",
-            })}
-          </time>
+          <time dateTime={activity.created_at}>{formatShortDate(activity.created_at)}</time>
         </div>
       ))}
     </div>

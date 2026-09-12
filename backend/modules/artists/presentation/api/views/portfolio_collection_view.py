@@ -1,3 +1,4 @@
+from rest_framework import status
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -16,8 +17,13 @@ class PortfolioCollectionView(APIView):
         return Response(PortfolioItemSerializer(items, many=True).data)
 
     def post(self, request: Request) -> Response:
-        artist = ArtistProfile.objects.get(user=request.user)
+        artist = ArtistProfile.objects.filter(user=request.user).first()
+        if artist is None:
+            return Response(
+                {"detail": "The artist profile was not created yet."},
+                status=status.HTTP_404_NOT_FOUND,
+            )
         serializer = PortfolioItemSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save(artist=artist)
-        return Response(serializer.data, status=201)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)

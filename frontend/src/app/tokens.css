@@ -73,4 +73,11 @@
   --form-width: 27rem;
   --input-height: 3rem;
   --transition-fast: 160ms ease;
+  --field-min: 11rem;
+  --textarea-height: 6rem;
+  --detail-column: minmax(0, 1fr);
+  --queue-column: minmax(18rem, 22rem);
+  --record-height: 3.5rem;
+  --badge-inline: 0.75rem;
+  --panel-gap: 1.5rem;
 }

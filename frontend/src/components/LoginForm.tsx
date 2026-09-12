@@ -3,7 +3,8 @@
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
-import { login } from "@/lib/api";
+import { RequestFailure } from "@/lib/http/RequestFailure";
+import { IdentityService } from "@/lib/services/IdentityService";
 
 export function LoginForm() {
   const router = useRouter();
@@ -17,10 +18,10 @@ export function LoginForm() {
     setSubmitting(true);
     setError("");
     try {
-      await login(email, password);
+      await IdentityService.login(email, password);
       router.replace("/");
     } catch (requestError) {
-      setError(requestError instanceof Error ? requestError.message : "Sign in failed.");
+      setError(RequestFailure.message(requestError));
     } finally {
       setSubmitting(false);
     }
@@ -37,4 +38,3 @@ export function LoginForm() {
     </form>
   );
 }
-

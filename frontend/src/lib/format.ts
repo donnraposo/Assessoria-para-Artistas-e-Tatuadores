@@ -13,3 +13,14 @@ export function humanizeAction(action: string): string {
     .replace(/\b\w/g, (letter) => letter.toUpperCase());
 }
 
+export function formatShortDate(value: string): string {
+  return new Date(value).toLocaleDateString("en-US", { month: "short", day: "numeric" });
+}
+
+export function formatLongDate(value: string): string {
+  return new Date(value).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+}

@@ -15,6 +15,14 @@ Centralizar a gestão operacional e administrativa.
 - Logística e `Minha Viagem`.
 - Auditoria e administração.
 
-## 3. Pontos em aberto
+## 3. Telas implementadas
 
-- Dashboards, filas operacionais, papéis internos e alçadas.
+- `Overview`: dashboard global com filas, receita confirmada e atividade auditada.
+- `Artist applications`: fila paginada com triagem por nome, estilos e experiência,
+  detalhe com perfil, contato e portfólio, e decisão de aprovação ou reprovação. A
+  reprovação sem motivo é barrada antes do envio e recusada pela API.
+
+## 4. Pontos em aberto
+
+- Papéis internos e alçadas.
+- Filas transacionais de Studios, propostas, reservas, fechamentos e logística.

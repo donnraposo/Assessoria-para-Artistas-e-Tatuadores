@@ -12,10 +12,19 @@ Gerenciar candidatura, avaliação, perfil, portfólio, parâmetros comerciais e
 - Disponibilidade por data e horário.
 - Consulta de Guests, agenda, resultados e `Minha Viagem`.
 
-## 3. Regras relacionadas
+## 3. Estado da implementação
+
+- Perfil, candidatura, avaliação, portfólio e disponibilidade disponíveis na API.
+- Jornada de candidatura e avaliação disponível na interface: o Artista preenche o perfil
+  e envia, a Assessoria tria a fila, abre o detalhe e decide com motivo auditado.
+- Emissão de URL assinada do portfólio permanece pendente da escolha do provedor S3.
+
+## 4. Regras relacionadas
 
 RN-001 a RN-008 e RN-016 a RN-025.
 
-## 4. Pontos em aberto
+## 5. Pontos em aberto
 
 - Critérios eliminatórios e conteúdo exibido na reprovação.
+- Reenvio após reprovação: hoje o envio exige rascunho, então uma candidatura reprovada
+  não pode ser reenviada. A interface comunica o estado; a regra depende de decisão.

@@ -1,4 +1,5 @@
 from django.core.paginator import Paginator
+from django.db.models import F
 
 from modules.artists.domain.enums import ApplicationStatus
 from modules.artists.infrastructure.persistence.models import ArtistApplication
@@ -18,7 +19,18 @@ class OperationsQueueService:
         queues = {
             "artist-applications": ArtistApplication.objects.filter(
                 status=ApplicationStatus.UNDER_REVIEW
-            ).values("id", "artist_id", "status", "submitted_at", "updated_at"),
+            )
+            .order_by("submitted_at")
+            .values(
+                "id",
+                "artist_id",
+                "status",
+                "submitted_at",
+                "updated_at",
+                professional_name=F("artist__professional_name"),
+                years_experience=F("artist__years_experience"),
+                styles=F("artist__styles"),
+            ),
             "studios": Studio.objects.filter(status=StudioStatus.UNDER_REVIEW).values(
                 "id", "name", "city", "country_code", "status", "updated_at"
             ),

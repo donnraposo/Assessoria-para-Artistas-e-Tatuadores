@@ -63,15 +63,23 @@
 
 ## Sprint 03 — Artistas e candidaturas
 
-**Estado:** concluída no backend. Perfil, candidatura, avaliação, metadados privados do portfólio e disponibilidade sem sobreposição foram implementados; a emissão de URL assinada dependerá da escolha do provedor S3 da infraestrutura.
+**Estado:** concluída no backend e, para a candidatura, também na interface. Perfil,
+candidatura, avaliação, metadados privados do portfólio e disponibilidade sem sobreposição
+foram implementados; a emissão de URL assinada dependerá da escolha do provedor S3 da
+infraestrutura.
 
 ### S03.01 — Perfil e candidatura
 
 - Modelar Artista, candidatura, estilos, parâmetros comerciais e estados.
 - Implementar criação, edição de rascunho, envio, análise, aprovação e reprovação.
-- **Endpoints:** `/artists`, `/artist-applications`, ações `/submit`, `/approve`, `/reject`.
+- **Endpoints:** `/artists/me/`, `/artists/me/application/`, `/artists/applications/{id}/`
+  e `/artists/applications/{id}/review/`.
 - **Telas:** candidatura, perfil, fila de avaliação e detalhe administrativo.
 - **Testes:** transições, campos obrigatórios, propriedade e auditoria.
+
+**Implementado:** perfil e candidatura do Artista, fila triável da Assessoria, detalhe com
+portfólio ordenado e decisão auditada. O perfil incompleto é recusado antes de qualquer
+gravação, e a candidatura só é aberta junto de um perfil válido.
 
 ### S03.02 — Portfólio
 
@@ -194,8 +202,9 @@
 ## Sprint 09 — Administração e lançamento
 
 **Estado:** em execução. S09.01, S09.02 e a parcela técnica de S09.03 estão
-implementadas. S09.04 permanece aberta até que as jornadas transacionais estejam
-disponíveis no frontend e a homologação visual/manual seja registrada.
+implementadas. A primeira jornada transacional — candidatura e avaliação de Artista —
+já é executável pela interface. S09.04 permanece aberta até que as demais jornadas
+estejam disponíveis no frontend e a homologação visual/manual seja registrada.
 
 ### S09.01 — Operação administrativa
 
@@ -234,8 +243,9 @@ produção, runbooks e restauração real em banco temporário.
 - Executar smoke test em homologação e plano de rollback.
 - **Aceite final:** Guest planejado, confirmado, preenchido, executado e acompanhado sem área do Cliente final.
 
-**Pendente:** telas transacionais, teste visual responsivo/teclado/contraste e
-homologação manual ponta a ponta. Login, dashboards, API e smoke HTTP já passaram.
+**Pendente:** telas transacionais de Studio, proposta/Guest, agenda, Leads, fechamento e
+logística; teste visual responsivo/teclado/contraste; e homologação manual ponta a ponta.
+Login, dashboards, candidatura e avaliação de Artista, API e smoke HTTP já passaram.
 
 ## Gate obrigatório por tarefa
 

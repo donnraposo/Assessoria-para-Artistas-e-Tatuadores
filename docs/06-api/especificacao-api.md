@@ -35,7 +35,23 @@ Registrar o contrato HTTP versionado implementado pelo MVP.
 - `GET /api/v1/operations/workspace/`: visão isolada de Artist ou Studio.
 - `GET /api/v1/notifications/` e `POST /api/v1/notifications/{id}/read/`.
 
-## 5. Endpoints operacionais implementados
+## 5. Artistas e candidaturas
+
+- `GET|PUT /api/v1/artists/me/`: perfil do próprio Artista. O `PUT` cria o perfil e abre a
+  candidatura em `DRAFT`; enquanto o perfil não existir, o `GET` responde HTTP 404.
+- `GET|POST /api/v1/artists/me/application/`: consulta e envio da própria candidatura.
+  O envio exige rascunho e ao menos um estilo declarado, respondendo HTTP 409 caso contrário.
+- `GET|POST /api/v1/artists/me/portfolio/`: metadados do portfólio do próprio Artista.
+- `GET|POST /api/v1/artists/me/availability/`: disponibilidade sem sobreposição.
+- `GET /api/v1/artists/applications/{application_id}/`: detalhe da candidatura para a
+  Assessoria, com perfil, contato e portfólio ordenado. Exclusivo do papel Advisory.
+- `POST /api/v1/artists/applications/{application_id}/review/`: aprovação ou reprovação
+  auditada. A reprovação exige motivo e responde HTTP 409 quando ele está ausente.
+
+A fila `artist-applications` devolve, além dos identificadores, `professional_name`,
+`years_experience` e `styles`, permitindo triagem sem abrir cada candidatura.
+
+## 6. Endpoints operacionais implementados
 
 - `GET|POST /api/v1/schedule/appointments/`: agenda autorizada e criação administrativa.
 - `GET /api/v1/schedule/guests/{guest_id}/occupancy/`: ocupação por horas e dias.

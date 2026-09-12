@@ -4,9 +4,12 @@ Sistema operacional para selecionar artistas, planejar operações de Guest, org
 
 ## Documentação
 
-Toda a documentação oficial está em [`docs/`](docs/), exclusivamente em Markdown.
+Toda a documentação oficial está em [`docs/`](docs/), exclusivamente em Markdown. Este
+README é o único documento fora dessa pasta.
 
 O planejamento técnico para construção do MVP está em [`docs/09-planejamento/`](docs/09-planejamento/).
+
+O histórico de alterações está em [`docs/CHANGELOG.md`](docs/CHANGELOG.md).
 
 ## Estrutura
 
@@ -20,8 +23,10 @@ O planejamento técnico para construção do MVP está em [`docs/09-planejamento
 
 Sprints 01 a 08 concluídas no backend. A Sprint 09 já entrega autenticação web,
 dashboards isolados por perfil, filas administrativas, notificações persistentes,
-imagens de produção e runbooks. As telas transacionais completas e a homologação
-visual/manual permanecem como gate antes de declarar o MVP pronto para lançamento.
+imagens de produção e runbooks. A primeira jornada transacional — candidatura do Artista
+e avaliação pela Assessoria — já é executável pela interface. As demais telas
+transacionais e a homologação visual/manual permanecem como gate antes de declarar o MVP
+pronto para lançamento.
 
 Decisões e execução estão documentadas em `docs/01-negocio/regras-de-negocio.md`,
 `docs/09-planejamento/` e `docs/10-operacao/`.

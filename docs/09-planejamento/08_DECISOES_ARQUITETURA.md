@@ -168,6 +168,35 @@ de acesso antes de serem exibidas.
 
 **Data:** 2026-09-11.
 
+## ADR-018 — Camadas do frontend
+
+**Decisão:** aplicar ao frontend a mesma separação da ADR-007. `lib/http` concentra o
+cliente HTTP e a tradução de falhas, `lib/types` os contratos da API, `lib/services` um
+serviço por módulo do backend, `lib/<módulo>` as regras de apresentação e validação, e
+`components` apenas composição visual. Cada classe ocupa arquivo exclusivo.
+
+**Motivo:** o cliente de API vinha crescendo como módulo único com tipos, transporte e
+chamadas, e as telas repetiam tratamento de erro e mapeamento de dados.
+
+**Consequência:** componentes não chamam `fetch` nem inspecionam código HTTP; o
+tratamento de 404 e de sessão expirada pertence ao serviço e a `RequestFailure`. Regras
+já garantidas pelo backend só são replicadas no frontend como orientação de interface,
+nunca como autoridade.
+
+**Data:** 2026-09-12.
+
+## ADR-019 — Navegação por `Link`
+
+**Decisão:** navegação interna entre telas usa o componente `Link` do Next.js.
+
+**Motivo:** âncoras simples descartam o estado do cliente e recarregam a aplicação
+inteira a cada troca de área, além de dispensarem o prefetch da rota.
+
+**Consequência:** rotas internas novas devem ser declaradas na navegação por papel, não
+em âncoras soltas dentro de componentes.
+
+**Data:** 2026-09-12.
+
 ## Processo de alteração
 
 Uma decisão aceita somente poderá ser substituída após registro do contexto, alternativas, impacto, migração necessária e aprovação do usuário.

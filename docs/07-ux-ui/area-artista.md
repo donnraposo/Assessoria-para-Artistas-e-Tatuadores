@@ -13,11 +13,18 @@ Permitir ao Artista acompanhar e administrar sua participação na operação.
 - Financeiro previsto.
 - `Minha Viagem` com viagem, acomodação, Studios, agenda e custos.
 
-## 3. Restrições
+## 3. Telas implementadas
+
+- `Overview`: workspace isolado com indicadores autorizados do próprio Artista.
+- `My application`: estado da candidatura, orientação por estado, motivo registrado pela
+  Assessoria e edição do perfil profissional com validação antes do envio.
+
+## 4. Restrições
 
 - Cancelamento confirmado deve ser solicitado à Assessoria.
 - Dados administrados pela Assessoria devem indicar estado e atualização.
 
-## 4. Pontos em aberto
+## 5. Pontos em aberto
 
-- Navegação, notificações e nível de edição de custos.
+- Notificações e nível de edição de custos.
+- Telas de portfólio, disponibilidade, agenda, resultados e `Minha Viagem`.

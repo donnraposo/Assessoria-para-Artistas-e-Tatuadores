@@ -1,11 +1,15 @@
-import { navigationItems } from "@/content/dashboard";
+import Link from "next/link";
+
+import type { NavigationItem } from "@/content/dashboard";
 
 type SidebarProps = {
   name: string;
   role: string;
+  items: NavigationItem[];
+  activeHref: string;
 };
 
-export function Sidebar({ name, role }: SidebarProps) {
+export function Sidebar({ name, role, items, activeHref }: SidebarProps) {
   const initials = name
     .split(" ")
     .map((part) => part[0])
@@ -17,10 +21,15 @@ export function Sidebar({ name, role }: SidebarProps) {
       <div className="brand"><b>A</b><span>Atria</span></div>
       <small>OPERATIONS</small>
       <nav>
-        {navigationItems.map((item, index) => (
-          <a className={index === 0 ? "active" : ""} href={item.href} key={item.href}>
+        {items.map((item, index) => (
+          <Link
+            aria-current={item.href === activeHref ? "page" : undefined}
+            className={item.href === activeHref ? "active" : ""}
+            href={item.href}
+            key={item.href}
+          >
             <i>{String(index + 1).padStart(2, "0")}</i>{item.label}
-          </a>
+          </Link>
         ))}
       </nav>
       <div className="profile">
