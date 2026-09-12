@@ -1,12 +1,14 @@
 from decimal import Decimal
 
 import pytest
+from rest_framework.test import APIClient
 
 from modules.artists.application.services import ArtistApplicationService
 from modules.artists.domain.enums import ApplicationStatus
 from modules.artists.infrastructure.persistence.models import ArtistApplication, ArtistProfile
 from modules.audit.infrastructure.persistence.models import AuditEvent
-from modules.identity.infrastructure.persistence.models import User
+from modules.identity.domain.enums import RoleType
+from modules.identity.infrastructure.persistence.models import Role, User, UserRole
 
 
 @pytest.mark.django_db
@@ -47,3 +49,27 @@ def test_rejection_requires_reason() -> None:
 
     with pytest.raises(ValueError, match="reason"):
         ArtistApplicationService.review(application, reviewer, False, "")
+
+
+@pytest.mark.django_db
+def test_first_profile_creation_creates_application_via_api() -> None:
+    user = User.objects.create_user(email="artist@example.com", full_name="Artist")
+    role = Role.objects.create(code=RoleType.ARTIST, name="Artista")
+    UserRole.objects.create(user=user, role=role)
+    client = APIClient()
+    client.force_authenticate(user)
+
+    response = client.put(
+        "/api/v1/artists/me/",
+        {
+            "professional_name": "Ink",
+            "styles": ["blackwork"],
+            "minimum_tattoo_value": "500",
+            "expected_ticket": "900",
+        },
+        format="json",
+    )
+
+    assert response.status_code == 200
+    profile = ArtistProfile.objects.get(user=user)
+    assert ArtistApplication.objects.filter(artist=profile).exists()

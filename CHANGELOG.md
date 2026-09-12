@@ -25,3 +25,8 @@ Todas as alterações relevantes do projeto serão registradas neste arquivo.
 - Viagens e acomodações administradas pela Assessoria, com moeda consistente e documentos privados.
 - Visão `My Trip` para consolidar logística, Studios, agenda e custos do Guest.
 - Intervenção excepcional da Assessoria na disponibilidade do Artista (RN-008), com motivo obrigatório e auditoria dedicada.
+- Auto-cadastro de Artista e Studio (RN-004 e RN-026), com atribuição de papel, validação de senha e login automático.
+
+### Corrigido
+
+- Criação do primeiro perfil de Artista (`PUT /api/v1/artists/me/`), que falhava com erro 500 por tentar gravar um registro em branco antes de aplicar os dados enviados.

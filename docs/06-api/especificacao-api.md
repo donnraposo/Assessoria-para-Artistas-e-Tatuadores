@@ -28,6 +28,7 @@ Registrar o contrato HTTP versionado implementado pelo MVP.
 - `GET /api/v1/health/`: vida do processo.
 - `GET /api/v1/ready/`: prontidão do processo e banco.
 - `GET /api/v1/auth/csrf/`: token CSRF.
+- `POST /api/v1/auth/register/`: auto-cadastro de Artista ou Studio, com login automático.
 - `POST /api/v1/auth/login/` e `POST /api/v1/auth/logout/`.
 - `GET /api/v1/auth/me/`: usuário e papéis correntes.
 - `GET /api/v1/operations/dashboard/`: visão global exclusiva da Assessoria.

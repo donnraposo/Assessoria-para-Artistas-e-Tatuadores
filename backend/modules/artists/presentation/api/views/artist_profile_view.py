@@ -16,10 +16,11 @@ class ArtistProfileView(APIView):
         return Response(ArtistProfileSerializer(profile).data)
 
     def put(self, request: Request) -> Response:
-        profile, created = ArtistProfile.objects.get_or_create(user=request.user)
+        profile = ArtistProfile.objects.filter(user=request.user).first()
+        created = profile is None
         serializer = ArtistProfileSerializer(profile, data=request.data)
         serializer.is_valid(raise_exception=True)
-        profile = serializer.save()
+        profile = serializer.save(user=request.user)
         if created:
             ArtistApplication.objects.create(artist=profile)
         return Response(serializer.data)
