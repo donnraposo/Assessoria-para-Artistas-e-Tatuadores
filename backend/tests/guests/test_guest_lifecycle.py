@@ -163,6 +163,22 @@ def test_advisory_can_cancel_proposal_via_api() -> None:
 
 
 @pytest.mark.django_db
+def test_advisory_can_confirm_proposal_via_api() -> None:
+    advisory_user = User.objects.create_user(email="admin@example.com", full_name="Admin")
+    advisory_role = Role.objects.create(code=RoleType.ADVISORY, name="Advisory")
+    UserRole.objects.create(user=advisory_user, role=advisory_role)
+    proposal = _build_proposal()
+    GuestProposalService.mark_ready(proposal)
+    client = APIClient()
+    client.force_authenticate(advisory_user)
+
+    response = client.post(f"/api/v1/guests/proposals/{proposal.id}/confirm/")
+
+    assert response.status_code == 201
+    assert response.json()["status"] == "CAPTURING"
+
+
+@pytest.mark.django_db
 def test_advisory_can_add_second_studio_to_confirmed_guest() -> None:
     advisory_user = User.objects.create_user(email="admin@example.com", full_name="Admin")
     advisory_role = Role.objects.create(code=RoleType.ADVISORY, name="Advisory")

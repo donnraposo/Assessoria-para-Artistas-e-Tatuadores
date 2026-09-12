@@ -57,3 +57,5 @@ Registrar o contrato HTTP versionado implementado pelo MVP.
 - `GET|POST /api/v1/logistics/guests/{guest_id}/accommodations/`: acomodações do Guest.
 - `PATCH /api/v1/logistics/accommodations/{accommodation_id}/`: atualização administrativa da acomodação.
 - `GET /api/v1/logistics/guests/{guest_id}/my-trip/`: visão consolidada autorizada.
+- `GET /api/v1/finance/guests/{guest_id}/summary/`: receita da Assessoria, saldo previsto/confirmado do Artista e reembolsos devidos.
+- `POST /api/v1/finance/entries/{entry_id}/confirm/`: confirmação administrativa de um lançamento (recebimento externo do Artista ou reembolso).

@@ -30,7 +30,9 @@ Todas as alterações relevantes do projeto serão registradas neste arquivo.
 - Studios adicionais por Guest com bloqueio de sobreposição de horário (RN-015).
 - Registro pela Assessoria de negociação de reserva de Studio fechada por canal externo (RN-032).
 - Atualização do status de pagamento do Studio, `Pendente` ou `Pago` (RN-033).
+- API de Finance: resumo de saldo por Guest e confirmação de recebimento externo do Artista, encerrando o "previsto" quando confirmado (RN-040).
 
 ### Corrigido
 
 - Criação do primeiro perfil de Artista (`PUT /api/v1/artists/me/`), que falhava com erro 500 por tentar gravar um registro em branco antes de aplicar os dados enviados.
+- Serialização do Guest (`GuestSerializer`), que sempre falhava com erro 500 por configurar `read_only_fields` incorretamente, quebrando a confirmação de proposta e a transição de estado do Guest via API.
