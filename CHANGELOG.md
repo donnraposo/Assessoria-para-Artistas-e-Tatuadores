@@ -24,3 +24,17 @@ Todas as alterações relevantes do projeto serão registradas neste arquivo.
 - Indicadores derivados de Leads, fechamentos, faturamento, receita, Ads e ocupação.
 - Viagens e acomodações administradas pela Assessoria, com moeda consistente e documentos privados.
 - Visão `My Trip` para consolidar logística, Studios, agenda e custos do Guest.
+- Intervenção excepcional da Assessoria na disponibilidade do Artista (RN-008), com motivo obrigatório e auditoria dedicada.
+- Auto-cadastro de Artista e Studio (RN-004 e RN-026), com atribuição de papel, validação de senha e login automático.
+- Recusa e cancelamento de Proposta de Guest com motivo obrigatório e auditoria (RN-010).
+- Studios adicionais por Guest com bloqueio de sobreposição de horário (RN-015).
+- Registro pela Assessoria de negociação de reserva de Studio fechada por canal externo (RN-032).
+- Atualização do status de pagamento do Studio, `Pendente` ou `Pago` (RN-033).
+- API de Finance: resumo de saldo por Guest e confirmação de recebimento externo do Artista, encerrando o "previsto" quando confirmado (RN-040).
+- API de bancadas, preços e disponibilidade do Studio, antes existentes apenas como modelos sem exposição via API (RN-029).
+- Tela de auto-cadastro (`/register`) para Artista e Studio, consumindo a API de registro e concluindo login automaticamente.
+
+### Corrigido
+
+- Criação do primeiro perfil de Artista (`PUT /api/v1/artists/me/`), que falhava com erro 500 por tentar gravar um registro em branco antes de aplicar os dados enviados.
+- Serialização do Guest (`GuestSerializer`), que sempre falhava com erro 500 por configurar `read_only_fields` incorretamente, quebrando a confirmação de proposta e a transição de estado do Guest via API.

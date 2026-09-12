@@ -28,6 +28,7 @@ Registrar o contrato HTTP versionado implementado pelo MVP.
 - `GET /api/v1/health/`: vida do processo.
 - `GET /api/v1/ready/`: prontidão do processo e banco.
 - `GET /api/v1/auth/csrf/`: token CSRF.
+- `POST /api/v1/auth/register/`: auto-cadastro de Artista ou Studio, com login automático.
 - `POST /api/v1/auth/login/` e `POST /api/v1/auth/logout/`.
 - `GET /api/v1/auth/me/`: usuário e papéis correntes.
 - `GET /api/v1/operations/dashboard/`: visão global exclusiva da Assessoria.
@@ -37,6 +38,14 @@ Registrar o contrato HTTP versionado implementado pelo MVP.
 
 ## 5. Endpoints operacionais implementados
 
+- `POST /api/v1/artists/{artist_id}/availability/override/`: intervenção excepcional da Assessoria na disponibilidade do Artista, com motivo obrigatório e auditoria.
+- `POST /api/v1/guests/proposals/{proposal_id}/transition/`: recusa ou cancelamento de Proposta com motivo obrigatório.
+- `GET|POST /api/v1/guests/{guest_id}/studios/`: Studios adicionais do Guest, com bloqueio de sobreposição de horário.
+- `GET|POST /api/v1/studios/me/workstations/`: bancadas do Studio autenticado.
+- `GET|POST /api/v1/studios/me/prices/`: modalidades e valores de cobrança do Studio autenticado.
+- `GET|POST /api/v1/studios/me/availability/`: disponibilidade por bancada do Studio autenticado.
+- `POST /api/v1/studios/booking-requests/{request_id}/external-response/`: registro pela Assessoria de negociação de reserva fechada por canal externo.
+- `PATCH /api/v1/studios/bookings/{booking_id}/payment/`: atualização do status de pagamento do Studio (`Pendente`/`Pago`).
 - `GET|POST /api/v1/schedule/appointments/`: agenda autorizada e criação administrativa.
 - `GET /api/v1/schedule/guests/{guest_id}/occupancy/`: ocupação por horas e dias.
 - `POST /api/v1/schedule/appointments/{appointment_id}/cancellation-requests/`: solicitação do Artista.
@@ -51,3 +60,5 @@ Registrar o contrato HTTP versionado implementado pelo MVP.
 - `GET|POST /api/v1/logistics/guests/{guest_id}/accommodations/`: acomodações do Guest.
 - `PATCH /api/v1/logistics/accommodations/{accommodation_id}/`: atualização administrativa da acomodação.
 - `GET /api/v1/logistics/guests/{guest_id}/my-trip/`: visão consolidada autorizada.
+- `GET /api/v1/finance/guests/{guest_id}/summary/`: receita da Assessoria, saldo previsto/confirmado do Artista e reembolsos devidos.
+- `POST /api/v1/finance/entries/{entry_id}/confirm/`: confirmação administrativa de um lançamento (recebimento externo do Artista ou reembolso).

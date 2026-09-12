@@ -1,5 +1,6 @@
 from django.urls import path
 
+from .views.advisory_availability_override_view import AdvisoryAvailabilityOverrideView
 from .views.artist_application_review_view import ArtistApplicationReviewView
 from .views.artist_application_view import ArtistApplicationView
 from .views.artist_profile_view import ArtistProfileView
@@ -15,5 +16,10 @@ urlpatterns = [
         "applications/<uuid:application_id>/review/",
         ArtistApplicationReviewView.as_view(),
         name="artist-application-review",
+    ),
+    path(
+        "<uuid:artist_id>/availability/override/",
+        AdvisoryAvailabilityOverrideView.as_view(),
+        name="artist-availability-override",
     ),
 ]
