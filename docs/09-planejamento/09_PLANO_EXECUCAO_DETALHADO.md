@@ -161,6 +161,8 @@
 
 ## Sprint 07 — Marketing e indicadores
 
+**Estado:** concluída no backend. Campanhas e gastos de Ads na moeda principal do Guest, auditoria e métricas derivadas de Leads, fechamentos, lançamentos financeiros e ocupação foram implementados. Métricas sem denominador retornam valor indefinido, sem divisão artificial por zero.
+
 ### S07.01 — Campanhas e Ads
 
 - Registrar orçamento, campanha, período, canal e gasto efetivo.
@@ -174,6 +176,8 @@
 - **Aceite:** métricas derivadas não exigem duplicidade de entrada.
 
 ## Sprint 08 — Logística e Minha Viagem
+
+**Estado:** concluída no backend. Trechos, acomodações externas ou vinculadas a Studio, referências documentais privadas, custos e a visão consolidada `My Trip` foram implementados. A Assessoria altera os dados e o Artista consulta somente os próprios Guests.
 
 ### S08.01 — Viagem e acomodação
 
@@ -189,11 +193,19 @@
 
 ## Sprint 09 — Administração e lançamento
 
+**Estado:** em execução. S09.01, S09.02 e a parcela técnica de S09.03 estão
+implementadas. S09.04 permanece aberta até que as jornadas transacionais estejam
+disponíveis no frontend e a homologação visual/manual seja registrada.
+
 ### S09.01 — Operação administrativa
 
 - Criar filas de candidaturas, reservas, propostas, fechamentos e logística.
 - Criar filtros, paginação, estados vazios, erros e confirmação de ações críticas.
 - Restringir Django Admin a suporte técnico controlado.
+
+**Implementado:** dashboard Advisory, filas paginadas, atividade auditada e
+workspaces isolados para Artist e Studio. O Django Admin permanece reservado à
+operação técnica autenticada.
 
 ### S09.02 — Notificações e tarefas
 
@@ -201,11 +213,19 @@
 - Implementar e-mails e lembretes idempotentes, retries e registro de falha.
 - Manter decisões financeiras e de agenda fora da fila.
 
+**Implementado:** caixa persistente, leitura, idempotência, até três tentativas e
+worker independente. Celery/Redis não foram introduzidos porque o volume atual não
+justifica essa dependência.
+
 ### S09.03 — Segurança e operação
 
 - Configurar TLS, headers, secrets, logs estruturados, monitoramento e alertas.
 - Configurar backup, retenção e executar restauração real.
 - Verificar dependências e imagens; remover privilégios desnecessários.
+
+**Implementado:** cookies e CSRF seguros, headers, redirecionamento TLS configurável,
+HSTS conservador, logs JSON, readiness com banco, imagens sem usuário root, stack de
+produção, runbooks e restauração real em banco temporário.
 
 ### S09.04 — Aceite e implantação
 
@@ -213,6 +233,9 @@
 - Validar responsividade, teclado, contraste e textos operacionais.
 - Executar smoke test em homologação e plano de rollback.
 - **Aceite final:** Guest planejado, confirmado, preenchido, executado e acompanhado sem área do Cliente final.
+
+**Pendente:** telas transacionais, teste visual responsivo/teclado/contraste e
+homologação manual ponta a ponta. Login, dashboards, API e smoke HTTP já passaram.
 
 ## Gate obrigatório por tarefa
 

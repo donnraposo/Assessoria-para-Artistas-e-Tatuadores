@@ -27,6 +27,9 @@ INSTALLED_APPS = [
     "modules.scheduling.apps.SchedulingConfig",
     "modules.sales.apps.SalesConfig",
     "modules.finance.apps.FinanceConfig",
+    "modules.marketing.apps.MarketingConfig",
+    "modules.logistics.apps.LogisticsConfig",
+    "modules.notifications.apps.NotificationsConfig",
 ]
 
 MIDDLEWARE = [
@@ -102,6 +105,12 @@ CORS_ALLOWED_ORIGINS = [
     for origin in os.getenv("DJANGO_CORS_ALLOWED_ORIGINS", "http://localhost:3000").split(",")
     if origin
 ]
+CORS_ALLOW_CREDENTIALS = True
+CSRF_TRUSTED_ORIGINS = [
+    origin.strip()
+    for origin in os.getenv("DJANGO_CSRF_TRUSTED_ORIGINS", "http://localhost:3000").split(",")
+    if origin
+]
 
 EMAIL_BACKEND = os.getenv(
     "DJANGO_EMAIL_BACKEND",
@@ -117,4 +126,12 @@ CACHES = {"default": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache"
 REST_FRAMEWORK["DEFAULT_THROTTLE_RATES"] = {
     "login": "5/minute",
     "password_reset": "3/hour",
+}
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {"json": {"()": "config.logging.json_formatter.JsonFormatter"}},
+    "handlers": {"console": {"class": "logging.StreamHandler", "formatter": "json"}},
+    "root": {"handlers": ["console"], "level": os.getenv("DJANGO_LOG_LEVEL", "INFO")},
 }

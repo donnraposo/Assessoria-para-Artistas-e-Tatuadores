@@ -120,17 +120,51 @@
 
 **Data:** 2026-09-11.
 
-## ADR-012 — Design tokens e componentes configuráveis
-
-**Decisão:** estilos derivam de variáveis CSS; componentes recebem conteúdo, estado e variações por estruturas tipadas.
-
-**Motivo:** consistência, manutenção, temas e reutilização.
-
-**Data:** 2026-09-11.
-
 ## ADR-013 — Idioma da aplicação
 
 **Decisão:** todo conteúdo visível da aplicação, incluindo mensagens da API, será escrito em inglês. A documentação interna permanece em português.
+
+**Data:** 2026-09-11.
+
+## ADR-014 — Cálculo e ausência de métricas
+
+**Decisão:** indicadores serão calculados a partir dos registros operacionais. Conversão representa fechamentos sobre Leads e ROAS representa faturamento vendido sobre gasto em Ads. Quando o denominador for zero, o indicador será retornado como `null`.
+
+**Motivo:** impedir duplicidade de entrada e evitar resultados matematicamente enganosos.
+
+**Data:** 2026-09-11.
+
+## ADR-015 — Documentos logísticos privados
+
+**Decisão:** persistir somente a chave privada do documento. Respostas comuns da API expõem apenas a existência do documento, nunca sua chave ou URL pública.
+
+**Motivo:** reduzir exposição de passagens, reservas e dados pessoais.
+
+**Data:** 2026-09-11.
+
+## ADR-016 — Notificações persistentes sem broker no MVP
+
+**Decisão:** armazenar notificações no PostgreSQL e processá-las por worker Django
+independente, com idempotência e limite de três tentativas.
+
+**Motivo:** oferecer recuperação de falha e rastreabilidade sem introduzir Redis e
+Celery antes de existir volume ou latência que os justifique.
+
+**Consequência:** a entrega não participa das transações críticas; o worker pode ser
+substituído por uma fila dedicada sem alterar os casos de uso.
+
+**Data:** 2026-09-11.
+
+## ADR-017 — Dashboards segregados por papel
+
+**Decisão:** manter dashboard global exclusivo da Assessoria e workspaces próprios
+para Artista e Studio.
+
+**Motivo:** impedir que indicadores comerciais e financeiros globais sejam expostos
+a usuários externos.
+
+**Consequência:** novas métricas exigem consulta com escopo explícito e teste negativo
+de acesso antes de serem exibidas.
 
 **Data:** 2026-09-11.
 

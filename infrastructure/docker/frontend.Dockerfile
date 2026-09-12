@@ -11,6 +11,8 @@ EXPOSE 3000
 
 FROM base AS builder
 
+ARG NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 COPY frontend /app
 RUN npm run build
 

@@ -102,6 +102,11 @@ O checklist operacional completo está em `09_PLANO_EXECUCAO_DETALHADO.md`.
 
 ## Sprint 09 — Administração, segurança e lançamento
 
+**Estado:** em execução. Filas administrativas, dashboards por papel, notificações
+persistentes, logs estruturados, endurecimento de segurança, imagens de produção,
+backup/restauração e smoke tests foram implementados. Restam as telas transacionais
+completas e a homologação visual/manual das jornadas para o aceite final.
+
 **Objetivo:** concluir filas operacionais, observabilidade, backup, recuperação, segurança e aceite do MVP.
 
 **Arquivos:** áreas administrativas, infraestrutura, runbooks e testes ponta a ponta.

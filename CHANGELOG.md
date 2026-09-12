@@ -20,3 +20,7 @@ Todas as alterações relevantes do projeto serão registradas neste arquivo.
 - Agenda e ocupação de Guests com validação de disponibilidade, período e Studio.
 - Leads e fechamento transacional com recebimento externo, idempotência, divisão financeira 20/80 e proteção concorrente de agenda.
 - Solicitação de cancelamento pelo Artista, decisão da Assessoria e registro do valor de restituição devido.
+- Campanhas, orçamento e gastos de Ads com moeda consistente e auditoria.
+- Indicadores derivados de Leads, fechamentos, faturamento, receita, Ads e ocupação.
+- Viagens e acomodações administradas pela Assessoria, com moeda consistente e documentos privados.
+- Visão `My Trip` para consolidar logística, Studios, agenda e custos do Guest.

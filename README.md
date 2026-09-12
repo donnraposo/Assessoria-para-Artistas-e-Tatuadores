@@ -18,4 +18,10 @@ O planejamento técnico para construção do MVP está em [`docs/09-planejamento
 
 ## Estado
 
-Sprints 01 a 06 concluídas no backend. Decisões e execução estão documentadas em `docs/01-negocio/regras-de-negocio.md` e `docs/09-planejamento/`.
+Sprints 01 a 08 concluídas no backend. A Sprint 09 já entrega autenticação web,
+dashboards isolados por perfil, filas administrativas, notificações persistentes,
+imagens de produção e runbooks. As telas transacionais completas e a homologação
+visual/manual permanecem como gate antes de declarar o MVP pronto para lançamento.
+
+Decisões e execução estão documentadas em `docs/01-negocio/regras-de-negocio.md`,
+`docs/09-planejamento/` e `docs/10-operacao/`.

@@ -4,6 +4,7 @@ from django.utils import timezone
 from modules.audit.infrastructure.persistence.models import AuditEvent
 from modules.finance.domain.enums import FinancialEntryStatus, FinancialEntryType
 from modules.finance.infrastructure.persistence.models import AgencyReceipt, FinancialEntry
+from modules.notifications.application.services import NotificationService
 from modules.sales.infrastructure.persistence.models import Closing
 from modules.scheduling.domain.enums import (
     AppointmentStatus,
@@ -78,5 +79,16 @@ class CancellationService:
             resource_id=str(locked.id),
             reason=reason.strip(),
             changes={"approved": approved, "appointment_status": appointment.status},
+        )
+        NotificationService.enqueue(
+            recipient=appointment.artist.user,
+            category="appointment_cancellation",
+            subject="Appointment cancellation decision",
+            message=(
+                "Your cancellation request was approved."
+                if approved
+                else "Your cancellation request was not approved."
+            ),
+            key=f"cancellation-decision:{locked.id}",
         )
         return locked

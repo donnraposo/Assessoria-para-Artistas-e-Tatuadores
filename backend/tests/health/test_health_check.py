@@ -11,6 +11,14 @@ def test_health_check_returns_ok(api_client: APIClient) -> None:
     assert response.json() == {"status": "ok"}
 
 
+@pytest.mark.django_db
+def test_readiness_check_validates_database(api_client: APIClient) -> None:
+    response = api_client.get(reverse("readiness-check"))
+
+    assert response.status_code == 200
+    assert response.json() == {"status": "ready", "database": "available"}
+
+
 @pytest.fixture
 def api_client() -> APIClient:
     return APIClient()

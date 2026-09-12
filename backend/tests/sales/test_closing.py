@@ -1,5 +1,6 @@
-from datetime import UTC, datetime, timedelta
+from datetime import datetime, timedelta
 from decimal import Decimal
+from zoneinfo import ZoneInfo
 
 import pytest
 
@@ -41,7 +42,13 @@ def build_scenario(email_suffix: str = "base"):
         address="Central Street, 1",
         status=StudioStatus.APPROVED,
     )
-    start = datetime.now(UTC) + timedelta(days=10)
+    zone = ZoneInfo("America/Sao_Paulo")
+    start = (datetime.now(zone) + timedelta(days=10)).replace(
+        hour=10,
+        minute=0,
+        second=0,
+        microsecond=0,
+    )
     proposal = GuestProposal.objects.create(
         artist=artist,
         primary_studio=studio,

@@ -1,0 +1,65 @@
+services:
+  postgres:
+    restart: unless-stopped
+    ports: !reset []
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
+
+  backend:
+    build:
+      target: production
+    command: >-
+      sh -c "python manage.py migrate --noinput &&
+      gunicorn config.wsgi:application --bind 0.0.0.0:8000
+      --workers 3 --access-logfile - --error-logfile -"
+    restart: unless-stopped
+    volumes: !reset []
+    environment:
+      DJANGO_SETTINGS_MODULE: config.settings.production
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:?DJANGO_SECRET_KEY is required}
+      POSTGRES_HOST: postgres
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; request = urllib.request.Request('http://localhost:8000/api/v1/ready/', headers={'X-Forwarded-Proto': 'https'}); urllib.request.urlopen(request).read()"
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+  notification-worker:
+    build:
+      context: .
+      dockerfile: infrastructure/docker/backend.Dockerfile
+      target: production
+    command: >-
+      sh -c "while true; do python manage.py process_notifications; sleep 30; done"
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      DJANGO_SETTINGS_MODULE: config.settings.production
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:?DJANGO_SECRET_KEY is required}
+      POSTGRES_HOST: postgres
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+
+  frontend:
+    build:
+      target: production
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:?NEXT_PUBLIC_API_URL is required}
+    command: node server.js
+    restart: unless-stopped
+    volumes: !reset []
+    environment:
+      HOSTNAME: 0.0.0.0
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:?NEXT_PUBLIC_API_URL is required}
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://127.0.0.1:3000/ || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
