@@ -261,6 +261,14 @@ export function deleteArtistAvailability(id: string) {
   return deleteWithCsrf(`/artists/me/availability/${id}/`);
 }
 
+export function getArtistAvailabilityFor(artistId: string) {
+  return requestJson<ArtistAvailability[]>(`/artists/${artistId}/availability/`);
+}
+
+export function overrideArtistAvailability(artistId: string, input: ArtistAvailabilityInput & { reason: string }) {
+  return postWithCsrf<ArtistAvailability>(`/artists/${artistId}/availability/override/`, input);
+}
+
 export type StudioProfile = {
   id: string;
   name: string;
@@ -367,6 +375,27 @@ export function createStudioAvailabilitySlot(input: StudioAvailabilitySlotInput)
   return postWithCsrf<StudioAvailabilitySlot>("/studios/me/availability/", input);
 }
 
+export type StudioBooking = {
+  id: string;
+  studio: string;
+  workstation: string | null;
+  starts_at: string;
+  ends_at: string;
+  timezone: string;
+  payment_status: "PENDING" | "PAID";
+  confirmed_at: string;
+};
+
+export function getGuestStudioBookings(guestId: string) {
+  return requestJson<StudioBooking[]>(`/studios/guests/${guestId}/bookings/`);
+}
+
+export function updateStudioBookingPaymentStatus(bookingId: string, paymentStatus: "PENDING" | "PAID") {
+  return patchWithCsrf<StudioBooking>(`/studios/bookings/${bookingId}/payment/`, {
+    payment_status: paymentStatus,
+  });
+}
+
 export type Guest = {
   id: string;
   city: string;
@@ -377,6 +406,36 @@ export type Guest = {
   currency: string;
   status: string;
 };
+
+export type FinancialEntry = {
+  id: string;
+  guest: string;
+  closing: string | null;
+  entry_type: "AGENCY_REVENUE" | "ARTIST_RECEIVABLE" | "ARTIST_REFUND_DUE";
+  status: "CONFIRMED" | "EXPECTED" | "DUE";
+  amount: string;
+  currency: string;
+  source_reference: string;
+  created_at: string;
+};
+
+export type GuestFinanceSummary = {
+  currency: string;
+  agency_revenue_confirmed: string;
+  artist_receivable_expected: string;
+  artist_receivable_confirmed: string;
+  artist_refund_due: string;
+  artist_refund_confirmed: string;
+  entries: FinancialEntry[];
+};
+
+export function getGuestFinanceSummary(guestId: string) {
+  return requestJson<GuestFinanceSummary>(`/finance/guests/${guestId}/summary/`);
+}
+
+export function confirmFinancialEntry(entryId: string, reference: string) {
+  return postWithCsrf<FinancialEntry>(`/finance/entries/${entryId}/confirm/`, { reference });
+}
 
 export type Appointment = {
   id: string;

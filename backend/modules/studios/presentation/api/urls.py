@@ -5,6 +5,7 @@ from .views.booking_external_response_view import BookingExternalResponseView
 from .views.booking_payment_status_view import BookingPaymentStatusView
 from .views.booking_request_create_view import BookingRequestCreateView
 from .views.booking_response_view import BookingResponseView
+from .views.guest_studio_bookings_view import GuestStudioBookingsView
 from .views.studio_availability_collection_view import StudioAvailabilityCollectionView
 from .views.studio_booking_request_collection_view import StudioBookingRequestCollectionView
 from .views.studio_price_collection_view import StudioPriceCollectionView
@@ -49,5 +50,10 @@ urlpatterns = [
         "bookings/<uuid:booking_id>/payment/",
         BookingPaymentStatusView.as_view(),
         name="booking-payment-status",
+    ),
+    path(
+        "guests/<uuid:guest_id>/bookings/",
+        GuestStudioBookingsView.as_view(),
+        name="guest-studio-bookings",
     ),
 ]

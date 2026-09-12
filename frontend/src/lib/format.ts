@@ -22,7 +22,7 @@ export type StatusTone = "positive" | "danger" | "warning" | "info" | "neutral";
 const statusTones: Record<StatusTone, readonly string[]> = {
   positive: ["APPROVED", "CONFIRMED", "ACCEPTED", "PAID", "FINISHED", "CLOSED", "READY", "COMPLETED", "ACTIVE"],
   danger: ["REJECTED", "REFUSED", "DECLINED", "CANCELLED", "CANCELED", "FAILED", "EXPIRED"],
-  warning: ["UNDER_REVIEW", "PENDING", "REQUESTED", "CANCELLATION_REQUESTED", "AWAITING_DECISION"],
+  warning: ["UNDER_REVIEW", "PENDING", "REQUESTED", "CANCELLATION_REQUESTED", "AWAITING_DECISION", "EXPECTED", "DUE"],
   info: ["PLANNING", "IN_CAPTURE", "IN_PROGRESS", "SCHEDULE_FULL", "OPEN", "SUBMITTED"],
   neutral: ["DRAFT", "INACTIVE"],
 };

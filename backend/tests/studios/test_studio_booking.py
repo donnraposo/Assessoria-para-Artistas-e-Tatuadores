@@ -359,3 +359,36 @@ def test_capacity_limits_overlapping_bookings_without_workstation() -> None:
 
     with pytest.raises(ValueError, match="conflicting"):
         StudioBookingService.confirm(third, advisory)
+
+
+@pytest.mark.django_db
+def test_advisory_can_list_studio_bookings_for_a_guest() -> None:
+    advisory_user = User.objects.create_user(email="admin-list@example.com", full_name="Admin")
+    advisory_role = Role.objects.create(code=RoleType.ADVISORY, name="Advisory")
+    UserRole.objects.create(user=advisory_user, role=advisory_role)
+    booking_request = _build_booking_request(advisory=advisory_user)
+    StudioBookingService.respond(booking_request, True)
+    booking = StudioBookingService.confirm(booking_request, advisory_user)
+    client = APIClient()
+    client.force_authenticate(advisory_user)
+
+    response = client.get(f"/api/v1/studios/guests/{booking_request.guest_id}/bookings/")
+
+    assert response.status_code == 200
+    body = response.json()
+    assert len(body) == 1
+    assert body[0]["id"] == str(booking.id)
+    assert body[0]["payment_status"] == "PENDING"
+    assert body[0]["studio"] == str(booking_request.studio_id)
+
+
+@pytest.mark.django_db
+def test_artist_cannot_list_studio_bookings_via_advisory_endpoint() -> None:
+    booking_request = _build_booking_request()
+    artist_user = booking_request.artist.user
+    client = APIClient()
+    client.force_authenticate(artist_user)
+
+    response = client.get(f"/api/v1/studios/guests/{booking_request.guest_id}/bookings/")
+
+    assert response.status_code == 403

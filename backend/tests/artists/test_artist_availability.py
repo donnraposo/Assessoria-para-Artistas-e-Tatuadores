@@ -274,3 +274,29 @@ def test_artist_cannot_delete_window_with_confirmed_appointment() -> None:
 
     assert response.status_code == 409
     assert ArtistAvailability.objects.filter(pk=availability.id).exists()
+
+
+@pytest.mark.django_db
+def test_advisory_can_list_artist_availability() -> None:
+    _, profile, availability = _build_artist_with_availability()
+    advisory = User.objects.create_user(email="advisory-list@example.com", full_name="Advisory")
+    role, _ = Role.objects.get_or_create(code=RoleType.ADVISORY, defaults={"name": "Advisory"})
+    UserRole.objects.create(user=advisory, role=role)
+    client = APIClient()
+    client.force_authenticate(advisory)
+
+    response = client.get(f"/api/v1/artists/{profile.id}/availability/")
+
+    assert response.status_code == 200
+    assert [item["id"] for item in response.json()] == [str(availability.id)]
+
+
+@pytest.mark.django_db
+def test_artist_cannot_list_another_artist_availability_via_advisory_endpoint() -> None:
+    user, profile, _ = _build_artist_with_availability(email="artist-list-forbidden@example.com")
+    client = APIClient()
+    client.force_authenticate(user)
+
+    response = client.get(f"/api/v1/artists/{profile.id}/availability/")
+
+    assert response.status_code == 403

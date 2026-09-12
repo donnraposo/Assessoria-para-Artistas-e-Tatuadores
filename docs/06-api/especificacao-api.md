@@ -76,3 +76,5 @@ Registrar o contrato HTTP versionado implementado pelo MVP.
 - `PATCH /api/v1/studios/bookings/{booking_id}/payment/`: atualização do status de pagamento do Studio (`Pendente`/`Pago`).
 - `GET /api/v1/finance/guests/{guest_id}/summary/`: receita da Assessoria, saldo previsto/confirmado do Artista e reembolsos devidos.
 - `POST /api/v1/finance/entries/{entry_id}/confirm/`: confirmação administrativa de um lançamento (recebimento externo do Artista ou reembolso).
+- `GET /api/v1/artists/{artist_id}/availability/`: leitura, exclusiva da Assessoria, da disponibilidade de um Artista específico, para decidir uma eventual intervenção excepcional.
+- `GET /api/v1/studios/guests/{guest_id}/bookings/`: leitura, exclusiva da Assessoria, das reservas de Studio confirmadas de um Guest, com o status de pagamento de cada uma.

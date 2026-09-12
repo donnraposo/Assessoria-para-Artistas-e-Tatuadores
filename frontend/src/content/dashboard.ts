@@ -78,6 +78,8 @@ export function getNavigationItems(role: string): NavigationItem[] {
   return [
     overviewItem,
     { label: "Create records", short: "Create", href: "/operations/create", icon: "create" },
+    { label: "Guests", short: "Guests", href: "/operations/guests", icon: "guest" },
+    { label: "Artists", short: "Artists", href: "/operations/artists", icon: "artist" },
     ...queueDefinitions.map((queue) => ({
       label: queue.label,
       short: queue.label.split(" ")[0],

@@ -1,5 +1,37 @@
 # Histórico de Alterações
 
+## 2026-09-12 — Fase C: Financeiro, pagamento do Studio e intervenção na disponibilidade
+
+- Adicionados dois endpoints de leitura, exclusivos da Assessoria, para viabilizar
+  a interface desta fase (sem alterar regra de negócio existente, apenas expondo
+  dados já produzidos pelos serviços):
+  - `GET /api/v1/artists/{artist_id}/availability/`: disponibilidade de um
+    Artista específico.
+  - `GET /api/v1/studios/guests/{guest_id}/bookings/`: reservas de Studio
+    confirmadas de um Guest, com o status de pagamento de cada uma.
+- Adicionadas as telas `/operations/guests` e `/operations/artists` na
+  navegação da Assessoria. A primeira reúne o saldo financeiro do Guest
+  (RN-025/040, com confirmação de lançamento) e o status de pagamento das
+  reservas de Studio (RN-033); a segunda reúne a disponibilidade do Artista
+  e a intervenção excepcional já existente na API (RN-008), agora com motivo
+  obrigatório também na interface.
+- Adicionado o painel de Finance (somente leitura) na tela de Guests do
+  Artist, reaproveitando o mesmo componente `GuestFinancePanel.tsx` usado
+  pela Assessoria (com a ação de confirmação omitida quando não autorizada).
+- Adicionados `EXPECTED` e `DUE` ao mapa de tom semântico de status em
+  `lib/format.ts`, com teste correspondente.
+- Novos componentes de uma unidade cada: `GuestFinancePanel.tsx`,
+  `StudioBookingPaymentPanel.tsx`, `ArtistAvailabilityOverridePanel.tsx`,
+  `AdvisoryGuestsScreen.tsx`, `AdvisoryArtistsScreen.tsx`.
+- Validado com `npm run lint`, `npm run typecheck`, `npm test`, 4 testes
+  backend novos (permissão e retorno dos dois endpoints de leitura) e teste
+  real de ponta a ponta (Playwright): Artist consultando o próprio saldo,
+  Assessoria confirmando um lançamento, marcando uma reserva como paga e
+  registrando uma intervenção de disponibilidade — sem erros de console.
+  Suíte backend completa (85 testes) sem regressão.
+- Com esta entrega, as 9 regras de negócio identificadas na auditoria têm
+  cobertura completa de API e interface.
+
 ## 2026-09-12 — Fase B: oferta do Studio e Studio adicional no Guest
 
 - Adicionadas as seções "Workstations", "Pricing" e "Availability" em
