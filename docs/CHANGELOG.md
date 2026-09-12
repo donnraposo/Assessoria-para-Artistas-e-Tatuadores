@@ -1,5 +1,32 @@
 # Histórico de Alterações
 
+## 2026-09-12 — Fase A: ações pendentes nas filas e disponibilidade do Artist
+
+- Adicionadas as ações "Decline" e "Cancel" na fila `guest_proposals`
+  (`PATCH` via `POST /api/v1/guests/proposals/{id}/transition/`), cobrindo a
+  interface de RN-010 já existente apenas na API.
+- Adicionadas as ações "Register external acceptance" e "Register external
+  decline" na fila `studio_reservations` para o status `REQUESTED`
+  (`POST /api/v1/studios/booking-requests/{id}/external-response/`),
+  cobrindo a interface de RN-032.
+- Adicionadas edição e remoção de disponibilidade em
+  `ArtistAvailabilityPanel.tsx` (RN-007), com bloqueio visual e motivo
+  exibido quando a janela é gerida pela Assessoria
+  (`changed_by_advisory`/`change_reason`, já retornados pela API).
+- Adicionada regra `.data-form button.quiet-action` em `styles.css` (seção
+  14) para distinguir a ação secundária "Cancel" da ação primária "Save"
+  dentro do mesmo formulário, reaproveitando os tokens já usados por
+  `.quiet-action`.
+- RN-033 (status de pagamento do Studio) fica pendente de decisão: o
+  pagamento é registrado em `StudioBooking`, que só existe após a reserva
+  ser confirmada e sai da fila `studio_reservations` (que lista apenas
+  `StudioBookingRequest` em `REQUESTED`/`ACCEPTED`); expor essa ação exige
+  uma fila ou seção nova, avaliada na Fase C.
+- Validado com `npm run lint`, `npm run typecheck`, `npm test` e teste real
+  de ponta a ponta (Playwright): edição/remoção de disponibilidade como
+  Artist, recusa de proposta e registro de aceite externo de reserva como
+  Assessoria, sem erros de console.
+
 ## 2026-09-12 — Tela de registro
 
 - Adicionadas a tela `/register` e a função `register()` em `lib/api.ts`,

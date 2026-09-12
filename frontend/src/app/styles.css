@@ -202,6 +202,8 @@ h1, h2, h3, h4, p { margin: var(--space-0); }
 .data-form button, .application-callout button, .guest-card button, .topbar button:not(.ghost-button), .login-form button { min-height: var(--touch-target); display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); justify-self: start; padding: var(--space-3) var(--space-5); border: var(--space-0); border-radius: var(--radius-round); background: var(--color-ink); color: var(--color-on-dark); font-size: var(--text-sm); font-weight: var(--weight-bold); }
 .data-form button:hover:not(:disabled), .application-callout button:hover:not(:disabled), .guest-card button:hover, .login-form button:hover:not(:disabled) { background: var(--color-accent); transform: translateY(var(--lift-hover)); }
 .data-form button:disabled, .application-callout button:disabled { cursor: not-allowed; opacity: var(--opacity-disabled); transform: none; }
+.data-form button.quiet-action { background: var(--color-surface); color: var(--color-ink-soft); }
+.data-form button.quiet-action:hover:not(:disabled) { background: var(--color-ink); color: var(--color-on-dark); transform: none; }
 .form-error { display: flex; align-items: center; gap: var(--space-2); padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); background: var(--color-danger-soft); color: var(--color-danger); font-size: var(--text-sm); font-weight: var(--weight-medium); }
 .success-message { color: var(--color-positive); font-size: var(--text-sm); font-weight: var(--weight-bold); }
 .checkbox-label { align-content: center; grid-template-columns: auto 1fr; align-items: center; }

@@ -5,7 +5,11 @@ export type QueueActionId =
   | "reject"
   | "mark-ready"
   | "confirm-guest"
+  | "decline-proposal"
+  | "cancel-proposal"
   | "confirm-booking"
+  | "external-accept-booking"
+  | "external-decline-booking"
   | "approve-cancellation"
   | "reject-cancellation";
 
@@ -35,9 +39,13 @@ export const queueDefinitions = [
   { key: "guest_proposals", slug: "guest-proposals", label: "Guest proposals", detail: "Planning or ready", hint: "Move a planned trip forward until the Guest is confirmed.", icon: "proposal", columns: ["artist_id", "city", "country_code", "status"], actions: [
     { id: "mark-ready", label: "Mark ready", tone: "neutral", statuses: ["PLANNING"] },
     { id: "confirm-guest", label: "Confirm Guest", tone: "approve", statuses: ["READY"] },
+    { id: "decline-proposal", label: "Decline", tone: "reject", statuses: ["PLANNING", "READY"], requiresReason: true },
+    { id: "cancel-proposal", label: "Cancel", tone: "reject", statuses: ["PLANNING", "READY"], requiresReason: true },
   ] },
   { key: "studio_reservations", slug: "studio-reservations", label: "Studio reservations", detail: "Require action", hint: "Confirm the Studio bookings already accepted by the partner.", icon: "reservation", columns: ["guest_id", "studio_id", "status", "starts_at"], actions: [
     { id: "confirm-booking", label: "Confirm booking", tone: "approve", statuses: ["ACCEPTED"] },
+    { id: "external-accept-booking", label: "Register external acceptance", tone: "approve", statuses: ["REQUESTED"], requiresReason: true },
+    { id: "external-decline-booking", label: "Register external decline", tone: "reject", statuses: ["REQUESTED"], requiresReason: true },
   ] },
   { key: "open_leads", slug: "open-leads", label: "Open leads", detail: "In negotiation", hint: "Register the 20% payment to close a sale and confirm its appointment.", icon: "lead", columns: ["client_name", "source", "appointment_id", "status"], actions: [] },
   { key: "cancellations", slug: "cancellations", label: "Cancellations", detail: "Awaiting decision", hint: "Decide on cancellation requests sent by artists.", icon: "cancellation", columns: ["appointment_id", "reason", "status", "created_at"], actions: [

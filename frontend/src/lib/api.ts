@@ -77,6 +77,15 @@ async function putWithCsrf<T>(path: string, body: Record<string, unknown>): Prom
   });
 }
 
+async function patchWithCsrf<T>(path: string, body: Record<string, unknown>): Promise<T> {
+  const token = await csrfToken();
+  return requestJson<T>(path, {
+    method: "PATCH",
+    headers: { "X-CSRFToken": token },
+    body: JSON.stringify(body),
+  });
+}
+
 async function deleteWithCsrf(path: string): Promise<void> {
   const token = await csrfToken();
   await requestJson<void>(path, {
@@ -158,6 +167,16 @@ export function decideCancellation(id: string, approved: boolean, reason: string
   return postWithCsrf(`/schedule/cancellation-requests/${id}/decide/`, { approved, reason });
 }
 
+export type ProposalTransitionTarget = "DECLINED" | "CANCELLED";
+
+export function transitionGuestProposal(id: string, target: ProposalTransitionTarget, reason: string) {
+  return postWithCsrf(`/guests/proposals/${id}/transition/`, { status: target, reason });
+}
+
+export function registerExternalStudioResponse(id: string, accepted: boolean, reason: string) {
+  return postWithCsrf(`/studios/booking-requests/${id}/external-response/`, { accepted, reason });
+}
+
 export type LeadClosingInput = {
   appointmentId: string;
   finalValue: string;
@@ -202,6 +221,8 @@ export type ArtistAvailability = {
   starts_at: string;
   ends_at: string;
   timezone: string;
+  changed_by_advisory: boolean;
+  change_reason: string;
 };
 
 export type ArtistProfileInput = Omit<ArtistProfile, "id">;
@@ -226,8 +247,18 @@ export function getArtistAvailability() {
   return requestJson<ArtistAvailability[]>("/artists/me/availability/");
 }
 
-export function createArtistAvailability(input: Omit<ArtistAvailability, "id">) {
+export type ArtistAvailabilityInput = Pick<ArtistAvailability, "starts_at" | "ends_at" | "timezone">;
+
+export function createArtistAvailability(input: ArtistAvailabilityInput) {
   return postWithCsrf<ArtistAvailability>("/artists/me/availability/", input);
+}
+
+export function updateArtistAvailability(id: string, input: ArtistAvailabilityInput) {
+  return patchWithCsrf<ArtistAvailability>(`/artists/me/availability/${id}/`, input);
+}
+
+export function deleteArtistAvailability(id: string) {
+  return deleteWithCsrf(`/artists/me/availability/${id}/`);
 }
 
 export type StudioProfile = {

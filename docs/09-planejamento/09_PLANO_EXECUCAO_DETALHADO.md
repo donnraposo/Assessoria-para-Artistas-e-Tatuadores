@@ -211,9 +211,14 @@ disponíveis no frontend e a homologação visual/manual seja registrada.
 
 **Implementado:** dashboard Advisory, sete filas paginadas, atividade auditada,
 workspaces isolados para Artist e Studio e ações de revisão, proposta, reserva,
-cancelamento e fechamento financeiro. O Django Admin permanece reservado à operação
-técnica autenticada. Criação e edição completa dos registros ainda serão entregues
-nas áreas transacionais de cada perfil.
+cancelamento e fechamento financeiro. Adicionadas nas filas `guest_proposals` e
+`studio_reservations` as ações de recusa/cancelamento de proposta (RN-010) e de
+registro de negociação externa de reserva (RN-032). O Django Admin permanece
+reservado à operação técnica autenticada. RN-033 (status de pagamento do
+Studio) ainda não tem local na interface, pois atua sobre a reserva já
+confirmada, fora das filas atuais — avaliação pendente na Fase C. Criação e
+edição completa dos demais registros ainda serão entregues nas áreas
+transacionais de cada perfil.
 
 ### S09.02 — Notificações e tarefas
 
@@ -244,13 +249,16 @@ produção, runbooks e restauração real em banco temporário.
 
 **Em andamento:** a Assessoria já possui filas, decisões principais e uma bancada
 transacional para criar propostas, reservas, Leads, agendamentos e campanhas; Artist já
-possui perfil, candidatura e disponibilidade; Studio já possui perfil, submissão e
-resposta a reservas. Artist também consulta Guests, agenda, cancelamentos, My Trip e
-metadados do portfólio. O design system foi atualizado para uma linguagem editorial
-urbana própria do universo da tatuagem, mantendo tokens CSS centralizados. A criação
-de viagem e acomodação também está disponível na bancada. O upload privado do portfólio
-foi concluído. Permanecem teste visual responsivo/teclado/contraste e
-homologação manual ponta a ponta. Login, dashboards, API e smoke HTTP já passaram.
+possui perfil, candidatura, disponibilidade com edição e remoção (RN-007) e tela de
+auto-cadastro (RN-004/026); Studio já possui perfil, submissão e resposta a reservas.
+Artist também consulta Guests, agenda, cancelamentos, My Trip e metadados do
+portfólio. O design system foi atualizado para uma linguagem editorial urbana própria
+do universo da tatuagem, mantendo tokens CSS centralizados. A criação de viagem e
+acomodação também está disponível na bancada. O upload privado do portfólio foi
+concluído. Permanecem teste visual responsivo/teclado/contraste e homologação manual
+ponta a ponta, além da interface de RN-029 (bancadas/preços/disponibilidade do
+Studio), RN-015 (Studio adicional em um Guest) e RN-033/financeiro (Fase B/C).
+Login, dashboards, API e smoke HTTP já passaram.
 
 ## Gate obrigatório por tarefa
 
