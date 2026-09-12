@@ -248,17 +248,19 @@ produção, runbooks e restauração real em banco temporário.
 - **Aceite final:** Guest planejado, confirmado, preenchido, executado e acompanhado sem área do Cliente final.
 
 **Em andamento:** a Assessoria já possui filas, decisões principais e uma bancada
-transacional para criar propostas, reservas, Leads, agendamentos e campanhas; Artist já
-possui perfil, candidatura, disponibilidade com edição e remoção (RN-007) e tela de
-auto-cadastro (RN-004/026); Studio já possui perfil, submissão e resposta a reservas.
-Artist também consulta Guests, agenda, cancelamentos, My Trip e metadados do
-portfólio. O design system foi atualizado para uma linguagem editorial urbana própria
-do universo da tatuagem, mantendo tokens CSS centralizados. A criação de viagem e
-acomodação também está disponível na bancada. O upload privado do portfólio foi
-concluído. Permanecem teste visual responsivo/teclado/contraste e homologação manual
-ponta a ponta, além da interface de RN-029 (bancadas/preços/disponibilidade do
-Studio), RN-015 (Studio adicional em um Guest) e RN-033/financeiro (Fase B/C).
-Login, dashboards, API e smoke HTTP já passaram.
+transacional para criar propostas, reservas, Leads, agendamentos, campanhas e Studio
+adicional em um Guest (RN-015); Artist já possui perfil, candidatura, disponibilidade
+com edição e remoção (RN-007) e tela de auto-cadastro (RN-004/026); Studio já possui
+perfil, submissão, resposta a reservas e cadastro próprio de bancadas, preços e
+disponibilidade (RN-029). Artist também consulta Guests, agenda, cancelamentos, My
+Trip e metadados do portfólio. O design system foi atualizado para uma linguagem
+editorial urbana própria do universo da tatuagem, mantendo tokens CSS centralizados.
+A criação de viagem e acomodação também está disponível na bancada. O upload privado
+do portfólio foi concluído. Permanecem teste visual responsivo/teclado/contraste e
+homologação manual ponta a ponta, além da interface financeira (saldo do Artist e
+confirmação pela Assessoria) e de RN-033 (status de pagamento do Studio), avaliadas
+na Fase C por exigirem um local novo na interface. Login, dashboards, API e smoke
+HTTP já passaram.
 
 ## Gate obrigatório por tarefa
 

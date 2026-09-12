@@ -312,6 +312,61 @@ export function respondToStudioBooking(id: string, accepted: boolean, reason: st
   });
 }
 
+export type Workstation = {
+  id: string;
+  name: string;
+  is_active: boolean;
+};
+
+export type WorkstationInput = Pick<Workstation, "name">;
+
+export function getWorkstations() {
+  return requestJson<Workstation[]>("/studios/me/workstations/");
+}
+
+export function createWorkstation(input: WorkstationInput) {
+  return postWithCsrf<Workstation>("/studios/me/workstations/", input);
+}
+
+export type StudioPrice = {
+  id: string;
+  pricing_type: string;
+  amount: string;
+  currency: string;
+  conditions: string;
+  valid_from: string;
+  valid_until: string | null;
+};
+
+export type StudioPriceInput = Omit<StudioPrice, "id">;
+
+export function getStudioPrices() {
+  return requestJson<StudioPrice[]>("/studios/me/prices/");
+}
+
+export function createStudioPrice(input: StudioPriceInput) {
+  return postWithCsrf<StudioPrice>("/studios/me/prices/", input);
+}
+
+export type StudioAvailabilitySlot = {
+  id: string;
+  workstation: string | null;
+  starts_at: string;
+  ends_at: string;
+  capacity: number;
+  timezone: string;
+};
+
+export type StudioAvailabilitySlotInput = Omit<StudioAvailabilitySlot, "id">;
+
+export function getStudioAvailabilitySlots() {
+  return requestJson<StudioAvailabilitySlot[]>("/studios/me/availability/");
+}
+
+export function createStudioAvailabilitySlot(input: StudioAvailabilitySlotInput) {
+  return postWithCsrf<StudioAvailabilitySlot>("/studios/me/availability/", input);
+}
+
 export type Guest = {
   id: string;
   city: string;
@@ -420,7 +475,7 @@ export type OperationsReferenceData = {
   guests: Array<{ id: string; artist_id: string; city: string; country_code: string; currency: string; starts_on: string; ends_on: string; status: string }>;
 };
 
-export type AdvisoryRecordKind = "proposal" | "reservation" | "lead" | "appointment" | "campaign" | "travel" | "accommodation";
+export type AdvisoryRecordKind = "proposal" | "reservation" | "lead" | "appointment" | "campaign" | "travel" | "accommodation" | "guest_studio";
 
 export function getOperationsReferenceData() {
   return requestJson<OperationsReferenceData>("/operations/reference-data/");
@@ -436,8 +491,9 @@ export function createAdvisoryRecord(kind: AdvisoryRecordKind, input: Record<str
     campaign: "/marketing/campaigns/",
     travel: `/logistics/guests/${guestId}/travel-segments/`,
     accommodation: `/logistics/guests/${guestId}/accommodations/`,
+    guest_studio: `/guests/${guestId}/studios/`,
   };
-  const body = ["travel", "accommodation"].includes(kind)
+  const body = ["travel", "accommodation", "guest_studio"].includes(kind)
     ? Object.fromEntries(Object.entries(input).filter(([key]) => key !== "guest"))
     : input;
   return postWithCsrf(paths[kind], body);

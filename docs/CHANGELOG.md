@@ -1,5 +1,26 @@
 # Histórico de Alterações
 
+## 2026-09-12 — Fase B: oferta do Studio e Studio adicional no Guest
+
+- Adicionadas as seções "Workstations", "Pricing" e "Availability" em
+  `studio/profile`, cobrindo a interface de RN-029 (bancadas, preços e
+  disponibilidade por bancada) já existente apenas na API
+  (`GET|POST /api/v1/studios/me/{workstations,prices,availability}/`).
+  Três novos componentes de uma unidade cada: `WorkstationPanel.tsx`,
+  `StudioPricePanel.tsx` e `StudioAvailabilityPanel.tsx`.
+- Adicionado o cartão "Additional Studio" na bancada da Assessoria
+  (`/operations/create`), cobrindo a interface de RN-015
+  (`POST /api/v1/guests/{guest_id}/studios/`). Não foi necessário nenhum
+  componente novo: bastou um novo item em `content/operationsForms.ts` e um
+  novo mapeamento de rota em `createAdvisoryRecord` (`lib/api.ts`), já que a
+  bancada é inteiramente orientada por dados tipados (`AdvisoryFormDefinition`).
+- Validado com `npm run lint`, `npm run typecheck`, `npm test` (ajustado o
+  teste de `operationsForms.ts` para a nova entrada) e teste real de ponta a
+  ponta (Playwright): cadastro de bancada/preço/disponibilidade como Studio e
+  criação de Studio adicional em um Guest como Assessoria, sem erros de
+  console. Suíte backend (81 testes) revalidada sem regressão — nenhum
+  endpoint foi alterado nesta rodada.
+
 ## 2026-09-12 — Fase A: ações pendentes nas filas e disponibilidade do Artist
 
 - Adicionadas as ações "Decline" e "Cancel" na fila `guest_proposals`
