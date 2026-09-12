@@ -12,5 +12,7 @@ class GuestStudioBookingsView(APIView):
     permission_classes = [HasAdvisoryRole]
 
     def get(self, request: Request, guest_id) -> Response:
-        bookings = StudioBooking.objects.filter(request__guest_id=guest_id).select_related("request")
+        bookings = StudioBooking.objects.filter(
+            request__guest_id=guest_id
+        ).select_related("request")
         return Response(StudioBookingSerializer(bookings, many=True).data)
