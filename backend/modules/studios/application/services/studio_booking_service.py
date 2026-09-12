@@ -4,6 +4,8 @@ from modules.audit.infrastructure.persistence.models import AuditEvent
 from modules.studios.domain.enums import BookingStatus, StudioStatus
 from modules.studios.infrastructure.persistence.models import StudioBooking, StudioBookingRequest
 
+PAYMENT_STATUSES = {"PENDING", "PAID"}
+
 
 class StudioBookingService:
     @staticmethod
@@ -21,6 +23,51 @@ class StudioBookingService:
         request.response_reason = reason.strip()
         request.save(update_fields=["status", "response_reason", "updated_at"])
         return request
+
+    @staticmethod
+    @transaction.atomic
+    def register_external_response(
+        request: StudioBookingRequest,
+        actor,
+        accepted: bool,
+        reason: str,
+    ) -> StudioBookingRequest:
+        if not reason.strip():
+            raise ValueError(
+                "Registering an externally negotiated response requires a reason."
+            )
+        updated = StudioBookingService.respond(request, accepted, reason)
+        AuditEvent.objects.create(
+            actor=actor,
+            action="studio_booking.external_response_registered",
+            resource_type="StudioBookingRequest",
+            resource_id=str(updated.id),
+            reason=reason.strip(),
+            changes={"status": updated.status},
+        )
+        return updated
+
+    @staticmethod
+    @transaction.atomic
+    def update_payment_status(
+        booking: StudioBooking,
+        actor,
+        payment_status: str,
+    ) -> StudioBooking:
+        if payment_status not in PAYMENT_STATUSES:
+            raise ValueError("Invalid payment status.")
+        locked = StudioBooking.objects.select_for_update().get(pk=booking.pk)
+        previous = locked.payment_status
+        locked.payment_status = payment_status
+        locked.save(update_fields=["payment_status"])
+        AuditEvent.objects.create(
+            actor=actor,
+            action="studio_booking.payment_status_changed",
+            resource_type="StudioBooking",
+            resource_id=str(locked.id),
+            changes={"payment_status": {"from": previous, "to": payment_status}},
+        )
+        return locked
 
     @staticmethod
     @transaction.atomic

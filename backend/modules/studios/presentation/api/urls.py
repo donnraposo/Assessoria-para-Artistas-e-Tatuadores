@@ -1,6 +1,8 @@
 from django.urls import path
 
 from .views.booking_confirm_view import BookingConfirmView
+from .views.booking_external_response_view import BookingExternalResponseView
+from .views.booking_payment_status_view import BookingPaymentStatusView
 from .views.booking_request_create_view import BookingRequestCreateView
 from .views.booking_response_view import BookingResponseView
 from .views.studio_profile_view import StudioProfileView
@@ -18,8 +20,18 @@ urlpatterns = [
         name="booking-response",
     ),
     path(
+        "booking-requests/<uuid:request_id>/external-response/",
+        BookingExternalResponseView.as_view(),
+        name="booking-external-response",
+    ),
+    path(
         "booking-requests/<uuid:request_id>/confirm/",
         BookingConfirmView.as_view(),
         name="booking-confirm",
+    ),
+    path(
+        "bookings/<uuid:booking_id>/payment/",
+        BookingPaymentStatusView.as_view(),
+        name="booking-payment-status",
     ),
 ]

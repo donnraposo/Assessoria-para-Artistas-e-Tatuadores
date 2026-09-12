@@ -26,6 +26,10 @@ Todas as alterações relevantes do projeto serão registradas neste arquivo.
 - Visão `My Trip` para consolidar logística, Studios, agenda e custos do Guest.
 - Intervenção excepcional da Assessoria na disponibilidade do Artista (RN-008), com motivo obrigatório e auditoria dedicada.
 - Auto-cadastro de Artista e Studio (RN-004 e RN-026), com atribuição de papel, validação de senha e login automático.
+- Recusa e cancelamento de Proposta de Guest com motivo obrigatório e auditoria (RN-010).
+- Studios adicionais por Guest com bloqueio de sobreposição de horário (RN-015).
+- Registro pela Assessoria de negociação de reserva de Studio fechada por canal externo (RN-032).
+- Atualização do status de pagamento do Studio, `Pendente` ou `Pago` (RN-033).
 
 ### Corrigido
 
