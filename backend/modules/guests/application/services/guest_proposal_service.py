@@ -4,8 +4,11 @@ from zoneinfo import ZoneInfo
 from django.db import transaction
 from django.utils import timezone
 
+from modules.artists.domain.enums import ApplicationStatus
+from modules.artists.infrastructure.persistence.models import ArtistApplication
 from modules.audit.infrastructure.persistence.models import AuditEvent
 from modules.guests.domain.enums import ProposalStatus
+from modules.guests.domain.policies import ArtistCommercialFloor
 from modules.guests.infrastructure.persistence.models import Guest, GuestProposal, GuestStudio
 from modules.studios.domain.enums import StudioStatus
 
@@ -17,10 +20,19 @@ class GuestProposalService:
             raise ValueError("The proposal cannot be prepared from its current status.")
         if proposal.ends_on < proposal.starts_on:
             raise ValueError("The end date must not precede the start date.")
+        if not ArtistApplication.objects.filter(
+            artist=proposal.artist,
+            status=ApplicationStatus.APPROVED,
+        ).exists():
+            raise ValueError("The Artist application must be approved.")
         if proposal.primary_studio.status != StudioStatus.APPROVED:
             raise ValueError("The primary Studio must be approved.")
         if not proposal.currency or proposal.ads_budget is None:
             raise ValueError("Currency and ad budget are required.")
+        ArtistCommercialFloor.ensure_respected(
+            proposal.artist.minimum_tattoo_value,
+            proposal.minimum_tattoo_value,
+        )
         proposal.status = ProposalStatus.READY
         proposal.save(update_fields=["status", "updated_at"])
         return proposal

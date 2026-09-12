@@ -19,6 +19,8 @@
 - Backend: Ruff aprovado, 43 testes aprovados em PostgreSQL real, Django Check sem
   problemas e nenhuma migração pendente.
 - Frontend: ESLint, TypeScript, 19 testes unitários e build Next.js aprovados.
+- Conformidade: aprovação do Artista, piso comercial declarado e intervenção auditada da
+  Assessoria na disponibilidade passaram a ser exigidos e cobertos por testes (53 no total).
 
 ## Gates ainda abertos
 

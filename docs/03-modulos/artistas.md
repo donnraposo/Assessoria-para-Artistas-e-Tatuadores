@@ -17,6 +17,9 @@ Gerenciar candidatura, avaliação, perfil, portfólio, parâmetros comerciais e
 - Perfil, candidatura, avaliação, portfólio e disponibilidade disponíveis na API.
 - Jornada de candidatura e avaliação disponível na interface: o Artista preenche o perfil
   e envia, a Assessoria tria a fila, abre o detalhe e decide com motivo auditado.
+- Intervenção excepcional da Assessoria na disponibilidade disponível na API, com motivo
+  obrigatório e histórico auditado.
+- A aprovação da candidatura passou a ser exigida para o Artista entrar em Proposta de Guest.
 - Emissão de URL assinada do portfólio permanece pendente da escolha do provedor S3.
 
 ## 4. Regras relacionadas

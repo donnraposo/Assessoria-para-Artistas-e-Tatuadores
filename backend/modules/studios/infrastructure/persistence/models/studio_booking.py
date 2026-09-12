@@ -2,6 +2,8 @@ import uuid
 
 from django.db import models
 
+from modules.studios.domain.enums import StudioPaymentStatus
+
 
 class StudioBooking(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -9,8 +11,8 @@ class StudioBooking(models.Model):
     confirmed_by = models.ForeignKey("identity.User", on_delete=models.PROTECT)
     payment_status = models.CharField(
         max_length=12,
-        choices=[("PENDING", "Pending"), ("PAID", "Paid")],
-        default="PENDING",
+        choices=StudioPaymentStatus.choices,
+        default=StudioPaymentStatus.PENDING,
     )
     confirmed_at = models.DateTimeField(auto_now_add=True)
 

@@ -197,6 +197,23 @@ em âncoras soltas dentro de componentes.
 
 **Data:** 2026-09-12.
 
+## ADR-020 — Aprovação e piso comercial como pré-condição da Proposta
+
+**Decisão:** a Proposta de Guest só atinge `Pronta para confirmação` quando a candidatura
+do Artista está aprovada e quando o valor mínimo da proposta é maior ou igual ao declarado
+pelo Artista em seu perfil. A comparação vive em `ArtistCommercialFloor`, no domínio de
+Guests, e é aplicada na criação e novamente na preparação.
+
+**Motivo:** RN-005 determina que o cadastro, por si só, não autoriza o uso dos serviços, e
+RN-016 e RN-017 tornam o valor declarado pelo Artista o piso da negociação. Sem o vínculo,
+o piso podia ser rebaixado na origem e o fechamento validaria contra um mínimo já reduzido.
+
+**Consequência:** o Artista continua sendo a autoridade sobre seu próprio piso; elevá-lo
+invalida propostas ainda não confirmadas, que precisarão ser corrigidas antes de avançar.
+Propostas já confirmadas preservam o snapshot, conforme RN-009.
+
+**Data:** 2026-09-12.
+
 ## Processo de alteração
 
 Uma decisão aceita somente poderá ser substituída após registro do contexto, alternativas, impacto, migração necessária e aprovação do usuário.

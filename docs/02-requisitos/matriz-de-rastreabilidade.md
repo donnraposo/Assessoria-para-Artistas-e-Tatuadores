@@ -8,7 +8,9 @@ Relacionar regras de negócio, requisitos, fluxos, módulos e testes.
 
 | Regra | Requisito | Módulo/Fluxo | Teste |
 |---|---|---|---|
-| RN-004 a RN-008 | RF-001 | Artistas / Candidatura | `tests/artists/test_artist_application.py` e `tests/artists/test_artist_application_api.py` |
+| RN-004 a RN-007 | RF-001 | Artistas / Candidatura | `tests/artists/test_artist_application.py` e `tests/artists/test_artist_application_api.py` |
+| RN-008 | RF-001 | Artistas / Disponibilidade | `tests/artists/test_availability_override.py` |
+| RN-005, RN-016 e RN-017 | RF-001 e RF-003 | Guests / Pré-condições da Proposta | `tests/guests/test_proposal_business_rules.py` |
 | RN-009 a RN-015 | RF-003 | Guests / Proposta e confirmação | A definir |
 | RN-019 a RN-025 | RF-004 e RF-007 | Agenda / Fechamento | A definir |
 | RN-026 a RN-033 | RF-002 e RF-005 | Studios / Reserva | A definir |

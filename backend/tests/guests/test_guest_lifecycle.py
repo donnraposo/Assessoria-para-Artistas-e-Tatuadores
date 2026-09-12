@@ -3,7 +3,8 @@ from decimal import Decimal
 
 import pytest
 
-from modules.artists.infrastructure.persistence.models import ArtistProfile
+from modules.artists.domain.enums import ApplicationStatus
+from modules.artists.infrastructure.persistence.models import ArtistApplication, ArtistProfile
 from modules.audit.infrastructure.persistence.models import AuditEvent
 from modules.guests.application.services import GuestProposalService, GuestTransitionService
 from modules.guests.domain.enums import GuestStatus, ProposalStatus
@@ -25,6 +26,7 @@ def test_ready_proposal_creates_guest_snapshot_and_primary_studio() -> None:
         minimum_tattoo_value=Decimal("500"),
         expected_ticket=Decimal("900"),
     )
+    ArtistApplication.objects.create(artist=artist, status=ApplicationStatus.APPROVED)
     studio = Studio.objects.create(
         owner=studio_user,
         name="Black Room",

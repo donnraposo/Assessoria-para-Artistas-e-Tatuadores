@@ -32,6 +32,8 @@ por data.
   com fila triável, detalhe da candidatura e decisão auditada.
 - Camadas explícitas no frontend, separando transporte HTTP, contratos, serviços por
   módulo, regras de apresentação e componentes.
+- Intervenção excepcional da Assessoria na disponibilidade do Artista, com motivo
+  obrigatório, bloqueio de sobreposição e histórico de antes, depois e responsável.
 
 ### Corrigido
 
@@ -39,6 +41,10 @@ por data.
   antes de validar os campos obrigatórios.
 - Respostas HTTP 404 no lugar de erro interno quando o Artista ainda não possui perfil ou
   candidatura, e quando a candidatura consultada pela Assessoria não existe.
+- Aprovação da candidatura do Artista passou a ser exigida para entrar em Proposta de
+  Guest, cumprindo RN-005, que antes era registrada sem nunca ser aplicada.
+- Valor mínimo da Proposta passou a respeitar o piso declarado pelo Artista, cumprindo
+  RN-016 e RN-017, que antes podiam ser contornados na criação da Proposta.
 
 ## 3. Registro por data
 
@@ -63,6 +69,14 @@ por data.
 - Corrigida a primeira gravação do perfil do Artista e os erros internos por ausência de
   perfil ou candidatura.
 - Mantidos abertos os gates de homologação visual, jornadas restantes e provedor de produção.
+
+### 2026-09-12 — Conformidade com regras de negócio
+
+- Exigida a aprovação da candidatura do Artista como pré-condição da Proposta (RN-005).
+- Vinculado o valor mínimo da Proposta ao piso declarado pelo Artista (RN-016 e RN-017).
+- Adicionada a intervenção auditada da Assessoria na disponibilidade (RN-008).
+- Adicionado o enum de domínio do pagamento do Studio, alinhando RN-033 à ADR-007.
+- Adicionada a decisão ADR-020 sobre pré-condições comerciais da Proposta.
 
 ## 4. Manutenção
 

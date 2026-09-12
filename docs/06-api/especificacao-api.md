@@ -43,6 +43,9 @@ Registrar o contrato HTTP versionado implementado pelo MVP.
   O envio exige rascunho e ao menos um estilo declarado, respondendo HTTP 409 caso contrário.
 - `GET|POST /api/v1/artists/me/portfolio/`: metadados do portfólio do próprio Artista.
 - `GET|POST /api/v1/artists/me/availability/`: disponibilidade sem sobreposição.
+- `POST /api/v1/artists/availability/{availability_id}/override/`: intervenção excepcional
+  da Assessoria (RN-008). Exige motivo, bloqueia sobreposição e registra antes, depois,
+  responsável e justificativa em auditoria. Exclusivo do papel Advisory.
 - `GET /api/v1/artists/applications/{application_id}/`: detalhe da candidatura para a
   Assessoria, com perfil, contato e portfólio ordenado. Exclusivo do papel Advisory.
 - `POST /api/v1/artists/applications/{application_id}/review/`: aprovação ou reprovação
@@ -51,7 +54,19 @@ Registrar o contrato HTTP versionado implementado pelo MVP.
 A fila `artist-applications` devolve, além dos identificadores, `professional_name`,
 `years_experience` e `styles`, permitindo triagem sem abrir cada candidatura.
 
-## 6. Endpoints operacionais implementados
+## 6. Pré-condições da Proposta de Guest
+
+`POST /api/v1/guests/proposals/{id}/ready/` só avança quando:
+
+- a candidatura do Artista está aprovada (RN-005);
+- o Studio principal está aprovado (RN-027);
+- moeda e orçamento de Ads estão definidos (RN-011 e RN-013);
+- o valor mínimo da proposta não é inferior ao declarado pelo Artista (RN-016 e RN-017).
+
+O mínimo também é validado na criação da proposta, respondendo HTTP 400. A verificação é
+repetida na preparação porque o Artista pode elevar seu mínimo depois.
+
+## 7. Endpoints operacionais implementados
 
 - `GET|POST /api/v1/schedule/appointments/`: agenda autorizada e criação administrativa.
 - `GET /api/v1/schedule/guests/{guest_id}/occupancy/`: ocupação por horas e dias.

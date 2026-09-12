@@ -95,6 +95,9 @@ gravação, e a candidatura só é aberta junto de um perfil válido.
 - Permitir intervenção excepcional da Assessoria com motivo obrigatório.
 - **Aceite:** histórico identifica antes, depois, responsável e justificativa.
 
+**Implementado:** `POST /api/v1/artists/availability/{id}/override/` exige motivo, bloqueia
+sobreposição e registra antes, depois, responsável e justificativa em auditoria.
+
 ## Sprint 04 — Studios e reservas
 
 **Estado:** concluída no backend. Cadastro, aprovação, bancadas, preços, disponibilidade e fluxo transacional de reserva foram implementados. A reserva já utiliza relacionamento com o Guest criado na Sprint 05.
@@ -129,6 +132,10 @@ gravação, e a candidatura só é aberta junto de um perfil válido.
 - Implementar estados Rascunho, Em planejamento, Pronta, Confirmada, Recusada e Cancelada.
 - Validar pré-condições de confirmação.
 - **Endpoints/telas:** CRUD e ações de transição com histórico.
+
+**Implementado:** a preparação exige candidatura do Artista aprovada (RN-005), Studio
+principal aprovado (RN-027), moeda e Ads definidos, e valor mínimo não inferior ao
+declarado pelo Artista (RN-016 e RN-017), verificado também na criação da proposta.
 
 ### S05.02 — Guest
 
