@@ -24,3 +24,4 @@ Todas as alterações relevantes do projeto serão registradas neste arquivo.
 - Indicadores derivados de Leads, fechamentos, faturamento, receita, Ads e ocupação.
 - Viagens e acomodações administradas pela Assessoria, com moeda consistente e documentos privados.
 - Visão `My Trip` para consolidar logística, Studios, agenda e custos do Guest.
+- Intervenção excepcional da Assessoria na disponibilidade do Artista (RN-008), com motivo obrigatório e auditoria dedicada.

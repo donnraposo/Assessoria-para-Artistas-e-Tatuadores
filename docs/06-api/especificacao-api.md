@@ -37,6 +37,7 @@ Registrar o contrato HTTP versionado implementado pelo MVP.
 
 ## 5. Endpoints operacionais implementados
 
+- `POST /api/v1/artists/{artist_id}/availability/override/`: intervenção excepcional da Assessoria na disponibilidade do Artista, com motivo obrigatório e auditoria.
 - `GET|POST /api/v1/schedule/appointments/`: agenda autorizada e criação administrativa.
 - `GET /api/v1/schedule/guests/{guest_id}/occupancy/`: ocupação por horas e dias.
 - `POST /api/v1/schedule/appointments/{appointment_id}/cancellation-requests/`: solicitação do Artista.
