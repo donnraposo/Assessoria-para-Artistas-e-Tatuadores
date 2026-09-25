@@ -73,6 +73,13 @@ export function buildAdvisoryForms(data: OperationsReferenceData, timezone: stri
       fields: [commonGuest, { name: "segment_type", label: "Segment type", type: "select", options: [{ label: "Outbound", value: "OUTBOUND" }, { label: "Return", value: "RETURN" }, { label: "Other", value: "OTHER" }], required: true }, { name: "origin", label: "Origin", type: "text", required: true }, { name: "destination", label: "Destination", type: "text", required: true }, { name: "departs_at", label: "Departs at", type: "datetime", required: true }, { name: "arrives_at", label: "Arrives at", type: "datetime", required: true }, { ...timezoneField, name: "origin_timezone", label: "Origin timezone" }, { ...timezoneField, name: "destination_timezone", label: "Destination timezone" }, { name: "provider", label: "Provider", type: "text" }, { name: "booking_reference", label: "Booking reference", type: "text" }, { name: "cost", label: "Cost", type: "number", defaultValue: "0", required: true }, currencyField, { name: "notes", label: "Notes", type: "textarea" }],
     },
     {
+      id: "guest_studio",
+      title: "Additional Studio",
+      description: "Add another Studio the Guest will visit during the trip.",
+      submitLabel: "Add Studio",
+      fields: [commonGuest, commonStudio, { name: "starts_at", label: "Starts at", type: "datetime", required: true }, { name: "ends_at", label: "Ends at", type: "datetime", required: true }],
+    },
+    {
       id: "accommodation",
       title: "Accommodation",
       description: "Add private lodging or an eligible Studio stay to a Guest itinerary.",

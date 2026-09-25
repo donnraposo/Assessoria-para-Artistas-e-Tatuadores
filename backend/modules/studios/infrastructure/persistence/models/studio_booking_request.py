@@ -18,6 +18,13 @@ class StudioBookingRequest(models.Model):
         on_delete=models.PROTECT,
         related_name="booking_requests",
     )
+    workstation = models.ForeignKey(
+        "studios.Workstation",
+        null=True,
+        blank=True,
+        on_delete=models.PROTECT,
+        related_name="booking_requests",
+    )
     artist = models.ForeignKey("artists.ArtistProfile", on_delete=models.PROTECT)
     requested_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     starts_at = models.DateTimeField()

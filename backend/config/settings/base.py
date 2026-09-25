@@ -135,6 +135,7 @@ CACHES = {"default": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache"
 REST_FRAMEWORK["DEFAULT_THROTTLE_RATES"] = {
     "login": "5/minute",
     "password_reset": "3/hour",
+    "registration": "5/hour",
 }
 
 LOGGING = {

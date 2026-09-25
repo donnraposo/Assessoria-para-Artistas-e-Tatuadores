@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { queueDefinitions, type QueueActionId } from "@/content/dashboard";
-import { closeLead, confirmGuestProposal, confirmStudioBooking, decideCancellation, getCurrentUser, getOperationsQueue, logout, markGuestProposalReady, reviewArtistApplication, reviewStudio, type CurrentUser, type LeadClosingInput, type OperationsQueue } from "@/lib/api";
+import { closeLead, confirmGuestProposal, confirmStudioBooking, decideCancellation, getCurrentUser, getOperationsQueue, logout, markGuestProposalReady, registerExternalStudioResponse, reviewArtistApplication, reviewStudio, transitionGuestProposal, type CurrentUser, type LeadClosingInput, type OperationsQueue } from "@/lib/api";
 
 import { ErrorScreen } from "./ErrorScreen";
 import { Icon } from "./Icon";
@@ -61,8 +61,16 @@ export function OperationsQueueScreen({ queueSlug }: OperationsQueueScreenProps)
       await markGuestProposalReady(id);
     } else if (action === "confirm-guest") {
       await confirmGuestProposal(id);
+    } else if (action === "decline-proposal") {
+      await transitionGuestProposal(id, "DECLINED", reason);
+    } else if (action === "cancel-proposal") {
+      await transitionGuestProposal(id, "CANCELLED", reason);
     } else if (action === "confirm-booking") {
       await confirmStudioBooking(id);
+    } else if (action === "external-accept-booking") {
+      await registerExternalStudioResponse(id, true, reason);
+    } else if (action === "external-decline-booking") {
+      await registerExternalStudioResponse(id, false, reason);
     } else {
       await decideCancellation(id, action === "approve-cancellation", reason);
     }

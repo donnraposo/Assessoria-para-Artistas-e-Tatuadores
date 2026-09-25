@@ -12,4 +12,7 @@ class BookingRequestSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         if attrs["ends_at"] <= attrs["starts_at"]:
             raise serializers.ValidationError("The end time must be after the start time.")
+        workstation = attrs.get("workstation")
+        if workstation and workstation.studio_id != attrs["studio"].id:
+            raise serializers.ValidationError("The workstation does not belong to this Studio.")
         return attrs

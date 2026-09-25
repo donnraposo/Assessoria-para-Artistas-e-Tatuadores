@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { createArtistAvailability, getArtistApplication, getArtistAvailability, getArtistProfile, getCurrentUser, logout, submitArtistApplication, updateArtistProfile, type ArtistApplication, type ArtistAvailability, type ArtistProfile, type ArtistProfileInput, type CurrentUser } from "@/lib/api";
+import { createArtistAvailability, deleteArtistAvailability, getArtistApplication, getArtistAvailability, getArtistProfile, getCurrentUser, logout, submitArtistApplication, updateArtistAvailability, updateArtistProfile, type ArtistApplication, type ArtistAvailability, type ArtistProfile, type ArtistProfileInput, type CurrentUser } from "@/lib/api";
 
 import { ArtistAvailabilityPanel } from "./ArtistAvailabilityPanel";
 import { ArtistProfileForm } from "./ArtistProfileForm";
@@ -78,6 +78,14 @@ export function ArtistAccountScreen() {
           onCreate={async (input) => {
             const created = await createArtistAvailability(input);
             setAvailability((items) => [...items, created]);
+          }}
+          onDelete={async (id) => {
+            await deleteArtistAvailability(id);
+            setAvailability((items) => items.filter((item) => item.id !== id));
+          }}
+          onUpdate={async (id, input) => {
+            const updated = await updateArtistAvailability(id, input);
+            setAvailability((items) => items.map((item) => (item.id === id ? updated : item)));
           }}
         />
       </section>
